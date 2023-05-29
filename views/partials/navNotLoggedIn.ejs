@@ -1,0 +1,109 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">FashionBlend</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link px-4" href="/auth">Women</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-4" href="#">Men</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-4" href="#">Kids</a>
+          </li>
+        </ul>
+        <form class="form-inline my-lg-0">
+          <div class="input-group">
+            <input class="form-control" type="search" placeholder="What are you looking for?" aria-label="Search">
+            <div class="input-group-append">
+              <button class="btn btn-light" type="submit"><i class="bi bi-search" ></i></button>
+            </div>
+          </div>
+        </form>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item" >
+            <a class="nav-link px-4" href="#" data-toggle="modal" data-target="#loginModal">Sign in/Signup</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-4" href="#"><i class="bi bi-heart" ></i></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-4" href="#"><i class="bi bi-cart"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+<!--             Modal for sign in / sign up -->
+
+
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Login using mobile</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p >Enjoy the convenience of a single account across all participating brands</p>
+        <form id="loginForm" action="/auth" method="post" target="myFrame" >
+
+          <div class="form-group">
+            <label for="phoneNumber">Mobile Number</label>
+            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter your mobile number">
+            <small id="phoneNumberHelp" class="form-text text-muted">By creating your account you agree to our <a href="" style="color: yellow; text-decoration: underline;">terms and conditions</a> .</small>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary"  onclick="$('#loginModal').hide(); $('#otpModal').modal('show');">Continue</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<iframe name="myFrame" style="display: none;"></iframe> <!-- Iframe to load the post requst pages -->
+
+<!--             Modal for OTP -->
+<!-- The modal -->
+<div class="modal fade" id="otpModal" tabindex="-1" aria-labelledby="otpModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="otpModalLabel">Verify OTP</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/auth/verify" method="post" >
+        <div class="modal-body">
+          <p>Enter the four-digit OTP sent to +91-8547724391</p>
+          <!-- Input boxes -->
+          <div class="input-group mb-3">
+            <input type="tel" class="form-control" name="OTP" maxlength="4" pattern="[0-9]+" >
+          </div>
+          
+          <button type="button" class="btn btn-link">Resend OTP</button>
+        </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" >Verify OTP</button>
+      </div>
+      </form> 
+    </div>
+  </div>
+</div>
+
+
+
