@@ -1,0 +1,48 @@
+<div class="container-fluid my-2 mx-auto">  
+    <nav aria-label="breadcrumb" class="">
+        <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#"><span class="badge bg-light text-dark">Home</span></a></li>
+        <li class="breadcrumb-item"><a href="#"><span class="badge bg-light text-dark">Men</span></a></li>
+        <li class="breadcrumb-item"><a href="#"><span class="badge bg-light text-dark">Topwear</span></a></li>
+        <li class="breadcrumb-item active" aria-current="page"><span class="badge bg-light text-dark">Casual Shirts</span></li>
+        </ol>
+    </nav>
+
+  <h2>Casual Shirts</h2>
+<div class="row">
+    <div class="col-6">
+        <span class="text-left">3439 Products</span>
+    </div>
+    <div class="col-6 text-right">
+            Sort by 
+            <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle='dropdown' aria-haspopup="true" aria-expanded="false">
+                  Relevance
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">New Arrivals</a>
+                  <a class="dropdown-item" href="#">Price - Low to High</a>
+                  <a class="dropdown-item" href="#">Price - High to Low</a>
+                </div>
+              </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <%for(let i in products){%>
+        <div class=" col-3 m-0">
+            <div onclick="window.location.href='/products/<%=products[i]._id%>';" style="cursor: pointer;">
+                <div class="card" style="width: 18rem;">
+                    <img src="/img/products/<%=products[i].img[0]%>" class="card-img-top" alt="...">
+                    <div class="card-body">
+                    <h5 class="card-title"><%=products[i].name%></h5>
+                    <p>₹<%=products[i].price%></p>
+                    <p class="card-text"><%=products[i].moreInfo.description%></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <%}%>
+</div>
+</div>  

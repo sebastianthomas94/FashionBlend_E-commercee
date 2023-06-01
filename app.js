@@ -8,7 +8,8 @@ const expressLayouts = require('express-ejs-layouts');
 const home = require("./routes/home");
 const auth = require("./routes/auth");
 const admin = require("./routes/admin");
-
+const products = require("./routes/products");
+const user = require("./model/user");
 const app = express();
 
 app.set("view engine", "ejs");     
@@ -27,9 +28,32 @@ app.use((req, res, next) => {
     res.header('Cache-control', 'no-cache,private,no-store,must-revalidate,max-stale=0, post-check=0,pre-check=0');
     next();
 });
+app.use("/admin", admin);
+app.use((req, res, next)=>{
+    if(req.session.loggedIn)        //banned middlewear
+    {
+        user.find({phone: req.session.phone})
+        .then((result)=>{
+            if(result[0].ban)
+                res.render('banned',{layout: false});
+            else
+                next();
+        });
+    }
+    else
+        next();
+});
 app.use("/", home);
 app.use("/auth", auth);
-app.use("/admin", admin)
+app.use("/products", products);
+
+const url = "mongodb://127.0.0.1:27017/FashionBlend";
+
+
+
+ mongo.connect(url)
+ .then(() => console.log('Database connected'))
+ .catch((err) => console.error(err)); 
 
 
 
@@ -37,6 +61,10 @@ app.use("/admin", admin)
 app.listen(8080,function(req,res){
     console.log("server is running at port 8080...");
 });
+
+
+
+
 
 
 

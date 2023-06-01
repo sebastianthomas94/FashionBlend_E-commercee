@@ -1,0 +1,24 @@
+<div class="container">
+    <h1><%=product.name%></h1>
+    <div class="row">
+      <div class="col-md-6">
+        <img src="/img/products/<%=product.img[0]%>" alt="Product Image" class="img-fluid w-75 rounded">
+      </div>
+      <div class="col-md-6 justify-content-center">
+        <h4>Product Description</h4>
+        <p><%=product.moreInfo.description%></p>
+        <h4>Brand: <%=product.moreInfo.brand%></h4>
+        <div class="form-group">
+          <label for="sizeSelect">Size:</label>
+          <select class="form-control" id="sizeSelect">
+            <option>Small</option>
+            <option>Medium</option>
+            <option>Large</option>
+            <option>X-Large</option>
+          </select>
+        </div>
+        <h4>Price: <%=product.price%></h4>
+        <button class="btn btn-primary">Add to Cart</button>
+      </div>
+    </div>
+  </div>

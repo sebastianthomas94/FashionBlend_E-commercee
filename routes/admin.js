@@ -1,49 +1,62 @@
 const exp = require('express');
 const router = exp.Router();
+const multer = require("multer");
+const { validateLoggin } = require("../middleware/general");
+const { deleteProductsGet,
+        editProductsGet,
+        editProductsPost,
+        blockUser,
+        usersGet,
+        addproductsPost,
+        addproductsGet,
+        logoutGet,
+        productsGet,
+        loginPost,
+        loginGet} = require("../controllers/adminControllers");
 
-const adminUsername= "admin";
-const adminPassword= "pass";
-router.get("/", (req, res)=>{console.log("inside get / of admin");
-    if(req.session.loggedIn)
-        res.render("adminHome", {layout: "adminLayout"});
-    else
-        res.redirect("/admin/login");
-});
-
-router.get("/login", (req, res)=>{console.log("inside get login");
-    if(req.session.loggedIn)
-        res.redirect("/admin");
-    else
-    {
-        res.render("adminLogin", {layout: false});
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        return cb(null, "./public/img/products");
+    },
+    filename: (req, file, cb) => {
+        return cb(null, `${Date.now()}.${file.originalname}`);
     }
 });
 
-router.post("/login", (req, res)=>{console.log("inside post login");
-    if(req.body.username === adminUsername && req.body.password === adminPassword)
-    {
-        req.session.loggedIn = true;
-        res.redirect("/admin");console.log("verified");
-    }
-    else
-    {   
-        res.redirect("/admin/login");
-        console.log("invalid credentials");
-    }
+const upload = multer({ storage: storage });
+
+
+
+
+router.get("/", validateLoggin, (req, res) => {
+    res.render("adminHome", { layout: "adminLayout" });
+
 });
 
+router.get("/login", loginGet);
 
-router.get("/products", (req, res)=>{console.log("inside get of /product");
-    if(req.session.loggedIn)
-        res.render("adminProducts", {layout: "adminLayout"});
-    else
-        res.redirect("/admin/login");
-});
+router.post("/login",loginPost);
 
 
-router.get("/logout", (req, res)=>{console.log("inside get logout");
-    req.session.destroy();
-    res.redirect("/admin/login");
-});
+router.get("/products", validateLoggin, productsGet);
+
+
+router.get("/logout",logoutGet);
+
+router.get("/addproducts", validateLoggin, addproductsGet);
+
+router.post("/addproducts/add", upload.single('img'),addproductsPost);
+
+router.get("/users", validateLoggin, usersGet);
+
+router.get("/blockuser/:id", validateLoggin, blockUser);
+
+router.get("/products/edit/:id", validateLoggin, editProductsGet);
+
+router.post("/products/edit/:id", validateLoggin, editProductsPost);
+
+
+
+router.get("/products/delete/:id", validateLoggin, deleteProductsGet);
 
 module.exports = router;

@@ -1,0 +1,52 @@
+<div class="container">
+    <div class="row">
+      <div class="col-8">
+        <h1 class="px-3">Users</h1>
+      </div>
+
+    </div>
+  
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">S/L</th>
+          <th scope="col">Name</th>
+          <th scope="col">Phone Number</th>
+          <th scope="col">Email</th>
+          <th scope="col">Gender</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Sample product rows -->
+        <%for (let i in users) {%>
+        <tr>
+          <th scope="row"><%=parseInt(i)+1%></th>
+          <td><%=users[i].name%></td>
+          <td><%=users[i].phone%></td>
+          <td>
+            <%=users[i].email%>
+          </td>
+          <td><%=users[i].gender%></td>
+          <td><%if(users[i].online){%><span class="badge badge-success">Online</span> <%}else{%><span class="badge badge-light">Offline</span> <%}%></td>
+          <td>
+            <form id="myForm" action="/admin/blockuser/<%=users[i]._id%>" method="get">
+ 
+              <%if(!users[i].ban){%>
+              
+              <button type="submit" class="btn btn-outline-danger">  Block </button>
+               
+              <%}else{%>
+                  
+              <button  type="submit" class="btn btn-outline-primary">UnBlock</button>
+          
+              <%}%>
+            </form>
+          </td>
+        </tr>
+        <%}%>
+        
+      </tbody>
+    </table>
+  </div>
