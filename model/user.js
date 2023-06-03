@@ -16,7 +16,11 @@ const userSchema=new schema({
         },
     ],
     online: Boolean,
-    ban: Boolean 
+    ban: Boolean ,
+    cart:[{
+        id: String,
+        numbers: Number
+    }]
 
 });
 

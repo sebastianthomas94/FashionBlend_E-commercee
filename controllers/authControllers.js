@@ -8,15 +8,15 @@ const authPost = (req, res) => {
     const phoneNumber = "+91" + req.body.phoneNumber;
     req.session.phone = phoneNumber;
 
-    client.messages.create({
+/*     client.messages.create({
         body: `Your otp verification for FashionBlend.com is ${req.session.OTP}`,
         to: "whatsapp:" + phoneNumber,
         from: "whatsapp:+14155238886"
 
     })
-        .then((message) => console.log(message))
-        .catch((err) => console.log(err));
-    res.end();
+        .then((message) => {})
+        .catch((err) => console.log(err));*/
+    res.end(); 
 };
 
 const verifyPost = (req, res) => {

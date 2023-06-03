@@ -1,24 +1,111 @@
-<div class="container">
-    <h1><%=product.name%></h1>
+<div class="container-fluid">
+<div class="row">
+  <div class="col mt-3">
+    <nav aria-label="breadcrumb" class="">
+      <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#"><span class="badge bg-light text-dark">Home</span></a></li>
+      <li class="breadcrumb-item"><a href="#"><span class="badge bg-light text-dark">Men</span></a></li>
+      <li class="breadcrumb-item"><a href="#"><span class="badge bg-light text-dark">Topwear</span></a></li>
+      <li class="breadcrumb-item active" aria-current="page"><span class="badge bg-light text-dark">Casual Shirts</span></li>
+      </ol>
+  </nav>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
     <div class="row">
       <div class="col-md-6">
-        <img src="/img/products/<%=product.img[0]%>" alt="Product Image" class="img-fluid w-75 rounded">
-      </div>
-      <div class="col-md-6 justify-content-center">
-        <h4>Product Description</h4>
-        <p><%=product.moreInfo.description%></p>
-        <h4>Brand: <%=product.moreInfo.brand%></h4>
-        <div class="form-group">
-          <label for="sizeSelect">Size:</label>
-          <select class="form-control" id="sizeSelect">
-            <option>Small</option>
-            <option>Medium</option>
-            <option>Large</option>
-            <option>X-Large</option>
-          </select>
+        <div class="text-center m-1">
+          <img src="https://lmsin.net/cdn-cgi/image/h=831,w=615,q=85,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000012495734-Green-Green-1000012495734_01-2100.jpg" alt="Product 1" width="100%" class="rounded">
         </div>
-        <h4>Price: <%=product.price%></h4>
-        <button class="btn btn-primary">Add to Cart</button>
+      </div>
+      <div class="col-md-6 ">
+        <div class="text-center m-1">
+          <img src="https://lmsin.net/cdn-cgi/image/h=831,w=615,q=85,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000012495734-Green-Green-1000012495734_02-2100.jpg" alt="Product 2" width="100%" class="rounded">
+        </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="text-center m-1">
+          <img src="https://lmsin.net/cdn-cgi/image/h=831,w=615,q=85,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000012495734-Green-Green-1000012495734_03-2100.jpg" alt="Product 3" width="100%" class="rounded">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="text-center m-1">
+          <img src="https://lmsin.net/cdn-cgi/image/h=831,w=615,q=85,fit=cover/https://aaeff43fe32172cbcecc-ae2a4e9a8cbc330ede5588dedf56886e.lmsin.net/lifestyle/1000012495734-Green-Green-1000012495734_04-2100.jpg" alt="Product 4" width="100%" class="rounded">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="row">
+      <div class="col-md-12">
+        <h3 class="p-0 m-0 font-weight-bold font-size: xx-large"><%=product.name%></h3>
+        <p style="font-size: x-large; color: #535665;" class="pt-0 mt-0"><%=product.moreInfo.description%></p>
+      </div>
+    </div>
+    <hr class="p-0 m-0">
+    <div class="row mt-2">
+      <div class="col-md-3 text-center ">
+        <strong style="font-size: x-large">₹<%=((product.price*0.01*(100-product.moreInfo.discount)).toFixed(2))%></strong>
+      </div>
+      <div class="col-md-3 text-center">
+         <span style="font-size: x-large; color:#696e79; " class="  text-decoration-line-through">₹<%=product.price%></span>
+    </div>
+      <div class="col-md-4 text-center">
+        <span style="font-size: x-large; color:#ff905a" class=" font-weight-bold">(<%=product.moreInfo.discount%>% OFF)</span>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Brand:</h3>
+        <p><%=product.moreInfo.brand%></p>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+
+          <button type="button" class="btn btn-sm btn-outline-dark col-sm-2 btn-sm" onclick="selectSize('xs')">XS</button>
+          <button type="button" class="btn btn-sm btn-outline-dark col-sm-2" onclick="selectSize('s')">S</button>
+          <button type="button" class="btn btn-sm btn-outline-dark col-sm-2" onclick="selectSize('m')">M</button>
+          <button type="button" class="btn btn-sm btn-outline-dark col-sm-2" onclick="selectSize('l')">L</button>
+          <button type="button" class="btn btn-sm btn-outline-dark col-sm-2" onclick="selectSize('xl')">XL</button>
+
+    </div>
+    <div class="row justify-content-center m-4" style="max-width: 3000px">
+      <div class="col-2">
+        <button class="btn btn-primary px-3 me-2"
+        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+        <i class="bi bi-file-minus"></i>
+      </button>
+      </div>
+
+      <div class="col-3">
+        <div class="form-outline">
+          <input id="numbers" min="0"  name="quantity" value="1" type="number" class="form-control" />
+          
+        </div>
+      </div>
+
+      <div class="col-2">
+        <button class="btn btn-primary px-3 ms-2"
+        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+        <i class="bi bi-plus"></i>
+      </button>
+      </div>
+    </div>
+
+    <div class="row justify-content-center my-3">
+      <div class="col-md-12">
+        <button type="button" class="btn btn-warning" id="addToCart" onclick="$('#addToCart').hide();$('#goToBag').show();addToCart('<%=product._id%>', $('#numbers').val());">Add to cart</button>
+        <button type="button" class="btn btn-outline-warning" id="goToBag" style="display: none;" onclick="window.location.href='/cart';"> →Go to Bag</button>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
   </div>
