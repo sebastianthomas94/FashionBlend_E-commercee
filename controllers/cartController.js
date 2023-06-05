@@ -7,7 +7,7 @@ const productPost = (req, res) => {
     })
         .then((result) => {
             console.log("saved", result);
-            res.status(200).send("success");
+            res.status(200);
         })
         .catch((err)=>{
             console.log(err);

@@ -67,12 +67,14 @@
     </div>
     <div class="row justify-content-center">
 
-          <button type="button" class="btn btn-sm btn-outline-dark col-sm-2 btn-sm" onclick="selectSize('xs')">XS</button>
-          <button type="button" class="btn btn-sm btn-outline-dark col-sm-2" onclick="selectSize('s')">S</button>
-          <button type="button" class="btn btn-sm btn-outline-dark col-sm-2" onclick="selectSize('m')">M</button>
-          <button type="button" class="btn btn-sm btn-outline-dark col-sm-2" onclick="selectSize('l')">L</button>
-          <button type="button" class="btn btn-sm btn-outline-dark col-sm-2" onclick="selectSize('xl')">XL</button>
-
+      <div class="btn-group" id="sizeButtons">
+        <button type="button" class="btn btn-outline-secondary size-button" value="xs" data-size="xs">XS</button>
+        <button type="button" class="btn btn-outline-secondary size-button" value="s" data-size="s">S</button>
+        <button type="button" class="btn btn-outline-secondary size-button" value="m" data-size="m">M</button>
+        <button type="button" class="btn btn-outline-secondary size-button" value="l" data-size="l">L</button>
+        <button type="button" class="btn btn-outline-secondary size-button" value="xl" data-size="xl">XL</button>
+      </div>
+      
     </div>
     <div class="row justify-content-center m-4" style="max-width: 3000px">
       <div class="col-2">

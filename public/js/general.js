@@ -28,3 +28,32 @@ $("#OTPform").submit(function(event) {console.log(" numsdfgds");
     });
   });
    */
+
+
+$(document).ready(function () {
+  if ($('#cartIcon').length) {
+    const phoneNumber = sessionStorage.getItem("phoneNumber");
+    console.log("phone number from session",phoneNumber);
+    $.ajax({
+      url: "/cart/pill",
+      method: "POST",
+      contentType: "application/json",
+      data: JSON.stringify({ phoneNumber: phoneNumber }),
+      success: function (data) {console.log("inside succes",data.number);
+       // console.log("CART PILL DISPLAYED:", data.number);
+        $('#cartPill').text(data.number);
+      },
+      error: function (error) {
+        
+      }
+    });
+  }
+});
+
+
+function savePhoneNumber() {
+  $(document).ready(function () {
+    const inputValue = $('#phoneNumber').val();
+    sessionStorage.setItem("phoneNumber", inputValue);
+  });
+}

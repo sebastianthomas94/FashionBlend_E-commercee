@@ -1,25 +1,24 @@
 let selectedSize = "";
 //for size selection
-function selectSize(size) {
-    selectSize= size;
-    const buttons = $('.size-button');
+$(document).ready(function() {
+    $('.size-button').click(function() {
+      // Remove 'active' class from all buttons
+      $('.size-button').removeClass('active');
   
-    // Remove 'active' class from all buttons
-    buttons.removeClass('active');
+      // Add 'active' class to the clicked button
+      $(this).addClass('active');
+      selectedSize =$(this).val() ;
+    });
+  });
   
-    // Add 'active' class to the selected button
-    const selectedButton = $(`button[data-size="${size}"]`);
-    selectedButton.addClass('active');
-    selectedButton.removeClass('btn-outline-dark').addClass('btn-dark');
-    
-  }
 
 function addToCart(id, num) {
     const cart = {
         id: id,
         size: selectedSize,
         numbers: num ,
-    }
+    };
+    console.log(cart);
     $.ajax({
         url: "/cart/addproduct", // Replace with your server's cart endpoint
         type: "POST",

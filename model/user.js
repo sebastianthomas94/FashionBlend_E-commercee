@@ -19,7 +19,8 @@ const userSchema=new schema({
     ban: Boolean ,
     cart:[{
         id: String,
-        numbers: Number
+        numbers: Number,
+        size: String
     }]
 
 });
