@@ -1,6 +1,7 @@
 const exp = require('express');
 const router = exp.Router();
 const multer = require("multer");
+const user = require("../model/user");
 const { validateLoggin } = require("../middleware/general");
 const { deleteProductsGet,
         editProductsGet,
@@ -58,5 +59,38 @@ router.post("/products/edit/:id", validateLoggin, editProductsPost);
 
 
 router.get("/products/delete/:id", validateLoggin, deleteProductsGet);
+
+router.get("/orders",validateLoggin,(req,res)=>{
+    user.find({})
+    .then((data)=> {
+        const orders=[];
+        for(let i in data)
+        {
+            if(data.orders)
+                orders.push(data);
+        }
+        console.log("orders from admin",data);
+        res.render("orderList", { layout: "adminLayout", users: data });
+
+    });
+});
+
+router.get("/orders/delivered/:id",(req,res)=>{
+    user.findOneAndUpdate(
+        { "orders._id": req.params.id },
+        { $set: { "orders.$.status": "delivered" } })
+        .then(()=>{
+            res.redirect("/admin/orders");
+        });
+});
+
+router.get("/orders/cancel/:id",(req,res)=>{
+    user.findOneAndUpdate(
+        { "orders._id": req.params.id },
+        { $set: { "orders.$.status": "cancel" } })
+        .then(()=>{
+            res.redirect("/admin/orders");
+        });
+});
 
 module.exports = router;

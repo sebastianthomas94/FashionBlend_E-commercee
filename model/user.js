@@ -32,7 +32,8 @@ const userSchema=new schema({
     orders:[{
         id: String,
         numbers: Number,
-        size: String
+        size: String,
+        status: String
     }]
 
 });

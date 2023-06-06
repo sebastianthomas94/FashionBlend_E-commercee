@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="row">
+      <div class="col-8">
+        <h1 class="px-3">Orders</h1>
+      </div>
+
+    </div>
+  
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">S/L</th>
+          <th scope="col">Order ID</th>
+          <th scope="col">User</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Address</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Sample product rows -->
+        <%for (let i in users) {%><%for(let j in users[i].orders){%>
+        <tr>
+          <th scope="row"><%=parseInt(i)+1%></th>
+          <td><%=users[i].orders[j]._id%></td>
+          <td><%=users[i].name%></td>
+          <td>
+            <%=users[i].phone%>
+          </td>
+          <td><%=users[i].address[0].state + " Pin:"+users[i].address[0].pin%></td>
+          <td><%if(users[i].orders[j].status){%> <%=users[i].orders[j].status%><%}else{%>Pending<%}%></td>
+          <td>
+            <div class="dropdown">
+                <button class="btn btn-outline-warning dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                  Action
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li><a class="dropdown-item" href="/admin/orders/delivered/<%=users[i].orders[j]._id%>">Delivered</a></li>
+                  <li><a class="dropdown-item" href="/admin/orders/cancel/<%=users[i].orders[j]._id%>">Cancel</a></li>
+                </ul>
+              </div>
+          </td>
+        </tr>
+        <%}}%>
+        
+      </tbody>
+    </table>
+  </div>

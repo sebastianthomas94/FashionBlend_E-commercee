@@ -62,9 +62,11 @@ router.post("/delete", userLoggin, (req, res) => {
 
 router.get("/selectaddress", userLoggin, (req, res) => {
     user.find({ phone: req.session.phone })
-        .then((result) => {
+        .then((result) => {console.log("inside select address======",result[0],result[0].address);
             const defaultAddress = [];
             const otherAddress = [];
+            if(!result[0].address.length)
+                res.redirect("/cart/addaddress");
             for (let i in result[0].address) {
                 if (result[0].address[i].default)
                     defaultAddress.push(result[0].address[i]);
