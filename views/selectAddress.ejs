@@ -1,0 +1,109 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row mt-4">
+                <div class="col-md-6">
+                  <h2>Delivery Address</h2>
+                </div>
+                <div class="col-md-6 text-end">
+                  <button class="btn btn-outline-dark" onclick="window.location.href='/cart/addaddress';">Add New Address</button>
+                </div>
+              </div>
+          
+              <div class="mt-4">
+                <h4>Default Address</h4>
+                <div class="card">
+                  <div class="card-body">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="address" id="defaultAddressSelector" value="defaultAddress" checked>
+                        <strong><%=defaultAddress.name%></strong><span class="badge badge badge-success ms-3"><%=defaultAddress.addressType%></span><br>
+                        <span><%=defaultAddress.building%></span><br>
+                        <span><%=defaultAddress.street+ ", " + defaultAddress.city%></span><span>, <%=defaultAddress.state%></span><br>
+                        <span>Landmark:<%=defaultAddress.landmark%></span><br>
+                        <span>Pincode :<%=defaultAddress.pin%></span><br>
+                        <span>phone:+91<%=defaultAddress.phone%></span>
+                    </div>
+                    <div class="mt-3 addressButton" id="defaultAddress">
+                      <button class="btn btn-outline-dark" onclick="removeAddress('<%=defaultAddress._id%>');">Remove</button>
+                      <button class="btn btn-outline-dark" onclick="editAddress('<%=defaultAddress._id%>');">Edit</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          
+              <div class="mt-4">
+                <%if(otherAddress){%>
+                <h4>Other Addresses</h4>
+                <%}%>
+                <%for(let i in otherAddress){%>
+                <div class="card my-4">
+                  <div class="card-body">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="address" id="" value="address<%=i%>">
+                      <strong><%=otherAddress[i].name%></strong><span class="badge badge badge-success ms-3"><%=otherAddress[i].addressType%></span><br>
+                      <span><%=otherAddress[i].building%></span><br>
+                      <span><%=otherAddress[i].street+ ", " + otherAddress[i].city%></span><span>, <%=otherAddress[i].state%></span><br>
+                      <span>Landmark :<%=otherAddress[i].landmark%></span><br>
+                      <span>Pincode :<%=otherAddress[i].pin%></span><br>
+                      <span>phone:+91<%=otherAddress[i].phone%></span>
+                      <div class="mt-3 addressButton" id="address<%=i%>">
+                        <button class="btn btn-outline-dark" onclick="deleteAddress('<%=otherAddress[i]._id%>');">Remove</button>
+                        <button class="btn btn-outline-dark" onclick="editAddress('<%=otherAddress[i]._id%>');">Edit</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <%}%>
+          
+
+          
+                <!-- Add more addresses as needed -->
+          
+              </div>
+        </div>
+        <div class="col-md-4 card mt-4">
+            <div class="card-header py-3 ">
+                <h5 class="mb-0">Summary</h5>
+              </div>
+              <div class="card-body">
+                <ul class="list-group list-group-flush">
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                    Total MRP
+                    <span>₹<%=total%></span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    Shipping
+                    <span>free</span>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                    <div>
+                      <strong>Total amount</strong>
+                      <strong>
+                        <p class="mb-0">(including GST)</span>
+                      </strong>
+                    </div>
+                    <span><strong>₹<%=total%></strong></span>
+                  </li>
+                </ul>
+    
+                <button type="button" class="btn btn-primary btn-lg btn-block" onclick="window.location.href='/cart/orderplaced'">
+                  Checkout
+                </button>
+              </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+    
+     $('.addressButton').hide();
+    $('#defaultAddress').show();
+    $('input[name="address"]').change(function() {
+      $('.addressButton').hide();
+      const buttonDivId= $("#"+$(this).val());
+        buttonDivId.show();
+        console.log(buttonDivId);
+    }); 
+  </script>

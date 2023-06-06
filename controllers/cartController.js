@@ -15,6 +15,14 @@ const productPost = (req, res) => {
 
 };
 
+const loggedIn= (req,res,next)=>{
+    if (req.session.phone)
+        next();
+    else
+        res.redirect("/");
+};
+
 module.exports = {
-    productPost
+    productPost,
+    loggedIn
 };

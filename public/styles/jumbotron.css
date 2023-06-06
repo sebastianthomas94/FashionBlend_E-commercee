@@ -1,0 +1,27 @@
+.jumbo {
+    text-align: center;
+    margin-top: 200px;
+}
+
+.jumbotron {
+    background-color: #f8f9fa;
+}
+
+.animate__animated {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
+.animate__zoomIn {
+    animation-name: zoomIn;
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale3d(0.3, 0.3, 0.3);
+    }
+    to {
+        opacity: 1;
+    }
+}

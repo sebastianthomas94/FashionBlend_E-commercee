@@ -13,7 +13,7 @@ const productsGet = (req, res)=>{
 const productsPageGet = (req,res)=>{
     products.find({ _id:req.params.id})
     .then((result)=>{
-        res.render("sampleProductPage", {loggedIn:req.sessionStore.loggedIn, product: result[0]});
+        res.render("sampleProductPage", {loggedIn:req.session.loggedIn, product: result[0]});
     }) 
     .catch((err)=>{
         console.log(err);

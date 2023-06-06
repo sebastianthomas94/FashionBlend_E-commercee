@@ -29,31 +29,61 @@ $("#OTPform").submit(function(event) {console.log(" numsdfgds");
   });
    */
 
-
+//cart pill updation
 $(document).ready(function () {
   if ($('#cartIcon').length) {
     const phoneNumber = sessionStorage.getItem("phoneNumber");
-    console.log("phone number from session",phoneNumber);
+    console.log("phone number from session", phoneNumber);
     $.ajax({
       url: "/cart/pill",
       method: "POST",
       contentType: "application/json",
       data: JSON.stringify({ phoneNumber: phoneNumber }),
-      success: function (data) {console.log("inside succes",data.number);
-       // console.log("CART PILL DISPLAYED:", data.number);
+      success: function (data) {
+        console.log("inside succes", data.number);
+        // console.log("CART PILL DISPLAYED:", data.number);
         $('#cartPill').text(data.number);
       },
       error: function (error) {
-        
+
       }
     });
   }
 });
 
-
+//for saving the phone number of user
 function savePhoneNumber() {
   $(document).ready(function () {
     const inputValue = $('#phoneNumber').val();
     sessionStorage.setItem("phoneNumber", inputValue);
   });
 }
+
+function removeFromCart(id) {
+  $.ajax({
+    url: "/cart/delete",
+    method: "post",
+    contentType: "application/json",
+    data: JSON.stringify({ id: id }),
+    success: function (data) {
+      location.reload();
+    },
+    error: function (error) {
+
+    }
+  });
+};
+
+
+//for select address remove and edit button
+
+function editAddress(id){
+  console.log("edit address",id);
+window.location.href = "/cart/editaddress/" + id;
+}
+
+function deleteAddress(id){
+  console.log("delete address",id);
+  window.location.href = "/cart/deleteaddress/" + id;
+}
+

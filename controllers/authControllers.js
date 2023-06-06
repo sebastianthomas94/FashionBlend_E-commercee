@@ -35,6 +35,7 @@ const verifyPost = (req, res) => {
                             console.log("error at adding online", err);
                         });
                     req.session.loggedIn = true;
+                    req.session._id=result[0]._id;
                     res.redirect("/");
                 }
                 else {
@@ -61,6 +62,7 @@ const newUserPost = (req, res) => {
     newUser.save()
         .then((result) => {
             req.session.loggedIn = true;
+            req.session._id=result[0]._id;
             res.redirect("/");
         })
         .catch((err) => { console.log(err); })

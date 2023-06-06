@@ -11,13 +11,25 @@ const userSchema=new schema({
     address:[
         {
             name: String,
-            address: String,
-            pin: Number
+            building: String,
+            street: String,
+            city: String,
+            state: String,
+            pin: Number,
+            landmark: String,
+            addressType: String,
+            default: String,
+            phone: Number,
         },
     ],
     online: Boolean,
     ban: Boolean ,
     cart:[{
+        id: String,
+        numbers: Number,
+        size: String
+    }],
+    orders:[{
         id: String,
         numbers: Number,
         size: String
