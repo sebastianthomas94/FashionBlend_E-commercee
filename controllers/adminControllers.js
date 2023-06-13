@@ -136,6 +136,37 @@ const deleteProductsGet = (req, res) => {
         });
 };
 
+const ordersGet = (req, res) => {
+    user.find({})
+        .then((data) => {
+            const orders = [];
+            for (let i in data) {
+                if (data.orders)
+                    orders.push(data);
+            }
+            console.log("orders from admin", data);
+            res.render("orderList", { layout: "adminLayout", users: data });
+
+        });
+};
+
+const deliveredGet = (req, res) => {
+    user.findOneAndUpdate(
+        { "orders._id": req.params.id },
+        { $set: { "orders.$.status": "delivered" } })
+        .then(() => {
+            res.redirect("/admin/orders");
+        });
+};
+
+const cancelGet = (req, res) => {
+    user.findOneAndUpdate(
+        { "orders._id": req.params.id },
+        { $set: { "orders.$.status": "cancel" } })
+        .then(() => {
+            res.redirect("/admin/orders");
+        });
+}
 
 module.exports = {
     deleteProductsGet,
@@ -148,5 +179,8 @@ module.exports = {
     logoutGet,
     productsGet,
     loginPost,
-    loginGet
+    loginGet,
+    ordersGet,
+    deliveredGet,
+    cancelGet
 };

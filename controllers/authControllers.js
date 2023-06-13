@@ -8,15 +8,15 @@ const authPost = (req, res) => {
     const phoneNumber = "+91" + req.body.phoneNumber;
     req.session.phone = phoneNumber;
 
-/*     client.messages.create({
-        body: `Your otp verification for FashionBlend.com is ${req.session.OTP}`,
-        to: "whatsapp:" + phoneNumber,
-        from: "whatsapp:+14155238886"
-
-    })
-        .then((message) => {})
-        .catch((err) => console.log(err));*/
-    res.end(); 
+    /*     client.messages.create({
+            body: `Your otp verification for FashionBlend.com is ${req.session.OTP}`,
+            to: "whatsapp:" + phoneNumber,
+            from: "whatsapp:+14155238886"
+    
+        })
+            .then((message) => {})
+            .catch((err) => console.log(err));*/
+    res.end();
 };
 
 const verifyPost = (req, res) => {
@@ -35,7 +35,7 @@ const verifyPost = (req, res) => {
                             console.log("error at adding online", err);
                         });
                     req.session.loggedIn = true;
-                    req.session._id=result[0]._id;
+                    req.session._id = result[0]._id;
                     res.redirect("/");
                 }
                 else {
@@ -62,7 +62,7 @@ const newUserPost = (req, res) => {
     newUser.save()
         .then((result) => {
             req.session.loggedIn = true;
-            req.session._id=result[0]._id;
+            req.session._id = result._id;
             res.redirect("/");
         })
         .catch((err) => { console.log(err); })
@@ -89,10 +89,18 @@ const logoutGet = (req, res) => {
     });
 };
 
+const profileGet = (req, res) => {
+    user.findOne({ _id: req.session._id })
+        .then((result) => {
+            res.render("userProfile", { loggedIn: req.session.loggedIn, data: result });
+        });
+}
+
 module.exports = {
     logoutGet,
     newUserPost,
     verifyPost,
-    authPost
+    authPost,
+    profileGet
 
 }

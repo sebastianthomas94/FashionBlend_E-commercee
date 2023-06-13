@@ -25,8 +25,8 @@
       <%for (let i in products) {%>
       <tr>
         <th scope="row"><%=parseInt(i)+1%></th>
-        <td><%=products[i].name%></td>
-        <td><%=products[i].moreInfo.brand%></td>
+        <td class="text-truncate" style="max-width: 150px;"><%=products[i].name%></td>
+        <td class="text-truncate" style="max-width: 150px;"><%=products[i].moreInfo.brand%></td>
         <td>
           <%for(let j in products[i].categories) {%>
             <span class="badge badge-dark"><%=products[i].categories[j]%></span>

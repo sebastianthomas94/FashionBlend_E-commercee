@@ -1,0 +1,28 @@
+<div class="container mt-3">
+    <h2 class="card-title">Wishlist</h2>
+    <div class="card col-10 mb-5">
+      <div class="card-body ">
+        <%for(let i in wishlist){%>
+        <div class="product justify-content-center al">
+          <div class="row">
+
+            <div class="col-md-2">
+              <img src="/img/products/<%=wishlist[i].img[0]%>" alt="Product 1" class="img-fluid">
+            </div>
+            <div class="col-md-5">
+              <h6 class="brand"><%=wishlist[i].name%></h6>
+              <p class="title"><%=wishlist[i].moreInfo.description%></p>
+              <button class="btn btn-outline-danger">Remove</button>
+            </div>
+            <div class="col-md-5">
+              <p class="mrp">MRP: <span class="text-muted"><del><%=wishlist[i].price%></del></span></p>
+              <p class="discounted-price">Discounted Price: <%=(wishlist[i].price*(1-(0.01*wishlist[i].moreInfo.discount))).toFixed(2)%></p>
+              <button class="btn btn-primary" onclick="window.location.href = '/cart/addproduct/<%=wishlist[i]._id%>'">Add to Basket</button>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <%}%>  
+      </div>
+    </div>
+  </div>

@@ -33,7 +33,13 @@ const userSchema=new schema({
         id: String,
         numbers: Number,
         size: String,
-        status: String
+        status: String,
+        date: Date,
+        ETA: Date,
+        address: String
+    }],
+    wishlist:[{
+        id: String,
     }]
 
 });

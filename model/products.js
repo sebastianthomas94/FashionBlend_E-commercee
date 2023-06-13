@@ -14,7 +14,8 @@ const productSchema=new schema({
         material: String,
         discount: Number,
         rating: Number
-    }
+    },
+    quantity: Number
 
 
 });

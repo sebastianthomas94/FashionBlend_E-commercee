@@ -68,18 +68,17 @@
     <div class="row justify-content-center">
 
       <div class="btn-group" id="sizeButtons">
-        <button type="button" class="btn btn-outline-secondary size-button" value="xs" data-size="xs">XS</button>
-        <button type="button" class="btn btn-outline-secondary size-button" value="s" data-size="s">S</button>
-        <button type="button" class="btn btn-outline-secondary size-button" value="m" data-size="m">M</button>
-        <button type="button" class="btn btn-outline-secondary size-button" value="l" data-size="l">L</button>
-        <button type="button" class="btn btn-outline-secondary size-button" value="xl" data-size="xl">XL</button>
+        <button type="button" class="btn btn-outline-secondary size-button" value="xs" data-size="xs" required>XS</button>
+        <button type="button" class="btn btn-outline-secondary size-button" value="s" data-size="s" required>S</button>
+        <button type="button" class="btn btn-outline-secondary size-button" value="m" data-size="m" required>M</button>
+        <button type="button" class="btn btn-outline-secondary size-button" value="l" data-size="l" required>L</button>
+        <button type="button" class="btn btn-outline-secondary size-button" value="xl" data-size="xl" required>XL</button>
       </div>
       
     </div>
     <div class="row justify-content-center m-4" style="max-width: 3000px">
       <div class="col-2">
-        <button class="btn btn-primary px-3 me-2"
-        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+        <button class="btn btn-primary px-3 me-2" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
         <i class="bi bi-file-minus"></i>
       </button>
       </div>
@@ -95,14 +94,17 @@
         <button class="btn btn-primary px-3 ms-2"
         onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
         <i class="bi bi-plus"></i>
-      </button>
+        </button>
       </div>
     </div>
 
     <div class="row justify-content-center my-3">
-      <div class="col-md-12">
-        <button type="button" class="btn btn-warning" id="addToCart" onclick="$('#addToCart').hide();$('#goToBag').show();addToCart('<%=product._id%>', $('#numbers').val());">Add to cart</button>
+      <div class="col-md-6">
+        <button type="button" class="btn btn-warning" id="addToCart" onclick="addToCart('<%=product._id%>', $('#numbers').val());">Add to cart</button>
         <button type="button" class="btn btn-outline-warning" id="goToBag" style="display: none;" onclick="window.location.href='/cart';"> →Go to Bag</button>
+      </div>
+      <div class="col-md-6">
+        <button type="button" class="btn btn-outline-danger" id="wishlist"  onclick="addToWishlist('<%=product._id%>');"> Add To Wishlist</button>
       </div>
     </div>
 
@@ -111,3 +113,18 @@
   </div>
 </div>
   </div>
+
+<!-- Tost -->
+<!--   <button type="button" class="btn btn-primary" onclick="showToast()">Show Toast</button>
+
+  <div class="toast" id="toastContainer" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="mr-auto">Toast Message</strong>
+      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="toast-body">
+      Select a size first
+    </div>
+  </div> -->
