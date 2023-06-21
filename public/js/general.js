@@ -78,6 +78,7 @@ function removeFromCart(id) {
 //for select address remove and edit button
 
 function editAddress(id){
+  console.log(id);
 window.location.href = "/cart/editaddress/" + id;
 }
 

@@ -31,14 +31,24 @@
 
 <div class="row">
     <%for(let i in products){%>
-        <div class=" col-3 m-0">
+        <div class="col col-12 col-xs-12 col-sm-6 col-md-3 mb-2 ">
             <div onclick="window.location.href='/products/<%=products[i]._id%>';" style="cursor: pointer;">
-                <div class="card" style="width: 18rem;">
+                <div class="card" >
                     <img src="/img/products/<%=products[i].img[0]%>" class="card-img-top" alt="...">
-                    <div class="card-body">
-                    <h5 class="card-title"><%=products[i].name%></h5>
-                    <p>₹<%=products[i].price%></p>
-                    <p class="card-text"><%=products[i].moreInfo.description%></p>
+                    <div class="card-body" style="max-height:10rem">
+                        <h5 class="card-title text-truncate"><%=products[i].name%></h5>
+                        <p class="card-text text-truncate" style="color:#535766"><%=products[i].moreInfo.description%></p>
+                        <div class="row mt-2">
+                            <div class="col">
+                              <strong style="font-size: medium" class="d-inline " >₹<%=((products[i].price*0.01*(100-products[i].moreInfo.discount)).toFixed(2))%></strong>
+
+                               <span style="font-size: medium ; color:#696e79; " class="d-inline ms-2"  text-decoration-line-through">₹<%=products[i].price%></span>
+
+                              <span style="font-size: medium; color:#ff905a" class="d-inline ms-2" font-weight-bold">(<%=products[i].moreInfo.discount%>% OFF)</span>
+                            </div>
+                      
+                          </div>
+
                     </div>
                 </div>
             </div>
@@ -46,3 +56,25 @@
     <%}%>
 </div>
 </div>  
+
+  <nav>
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <%for(let i=1; i<=totalPages; i++){%>
+        <%if(pageNo===i){%>
+      <li class="page-item active"><a class="page-link" href="/products/page/+<%=i%>"><%=i%></a></li>
+      <%}else{%>
+      <li class="page-item "><a class="page-link" href="/products/page/+<%=i%>"><%=i%></a></li>
+        <%}%>
+      <%}%>
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>

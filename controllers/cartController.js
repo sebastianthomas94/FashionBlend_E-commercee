@@ -1,5 +1,10 @@
 const user = require("../model/user");
 const products = require("../model/products");
+const Razorpay = require('razorpay');
+const instance = new Razorpay({
+    key_id: 'rzp_test_uN7cMKTYFIHGa4',
+    key_secret: 'VGQj892OZjoEVCIP254nK7Kd',
+});
 
 const productPost = (req, res) => {
 
@@ -32,7 +37,6 @@ const cartGet = (req, res) => {
                 return element.id;
 
             });
-            console.log(productIdFromCart);
             products.find({ _id: { $in: productIdFromCart } })
                 .then((result) => {
                     let data = cart.map((obj) => {
@@ -59,7 +63,6 @@ const pillPost = (req, res) => {
 };
 
 const deletePost = (req, res) => {
-    console.log("inside delete");
     const _id = req.body.id;
     user.findOneAndUpdate(
         { phone: req.session.phone },
@@ -107,13 +110,11 @@ const addAddressGet = (req, res) => {
 };
 
 const editAddressGet = (req, res) => {
-    console.log("id from address", req.params.id);
     user.findOne(
         { 'address._id': req.params.id },
         { 'address.$': 1 }
     )
         .then((result) => {
-            console.log("THE ADDRESS DETAILS", result.address[0]);
             res.render("editAddressForm", { loggedIn: req.session.loggedIn, address: result.address[0] });
         })
         .catch((err) => {
@@ -135,33 +136,50 @@ const editAddressPost = (req, res) => {
     user.updateOne(
         { 'address._id': req.params.id },
         { $set: { 'address.$': req.body } })
-        .then((result) => {});
+        .then((result) => { });
     res.redirect("/cart/selectaddress");
 };
 
 const orderPlacedGet = (req, res) => {
+    const dateNow = dateAndTime(new Date());
+    const ETADate = dateAndTime(new Date(Date.now() + 3 * 24 * 60 * 60 * 1000));
     user.findOne({ _id: req.session._id })
-        .then((result) => {
-            result.orders.push(...result.cart);
-            result.cart = [];
-            result.save()
+        .then(async (result) => {
+            const cart = result.cart;
+            const orders = await Promise.all(cart.map(async(item) => {
+                let price;
+                let oneProduct= await products.findOne({_id: item.id});
+                price = ((oneProduct.price*0.01*(100-oneProduct.moreInfo.discount)).toFixed(2))*item.numbers;
+                console.log(price);
+                return {
+                    id: item.id,
+                    numbers: item.numbers,
+                    size: item.size,
+                    paymentMethod: "COD",
+                    date: dateNow.date,
+                    ETA: ETADate.date,
+                    time: dateNow.time,
+                    amount: price
+
+                };
+            }));
+            user.updateOne(
+                { _id: req.session._id }, // Specify the document to update based on its _id
+                {
+                    $push: { orders: [...orders] }, // Push an array of order documents
+                    $set: { cart: [] } // Empty the cart field by setting it as an empty array
+                }
+            )
                 .then(() => {
-                    res.render("orderPlaced", { loggedIn: req.session.loggedIn });
-                    /*             setTimeout(() => {
-                                    res.redirect('/');
-                                  }, 3000); // Delay for 3 seconds (3000 milliseconds */
+                    res.status(200).redirect("/cart/orderplacedonline");
                 });
-        })
-        .catch((err) => {
-            console.log(err);
         });
 };
 
 const wishlistGet = (req, res) => {
-     user.findOne({_id: req.session._id})
+    user.findOne({ _id: req.session._id })
         .then((data) => {
-            if(data.wishlist.length)
-            {
+            if (data.wishlist.length) {
                 const idsToFind = data.wishlist.map(doc => doc.id);
                 products.find({ _id: { $in: idsToFind } })
                     .then((result) => {
@@ -170,49 +188,118 @@ const wishlistGet = (req, res) => {
                     });
             }
             else
-                res.render("emptyWishlist",{ loggedIn: req.session.loggedIn});
+                res.render("emptyWishlist", { loggedIn: req.session.loggedIn });
         });
-    
+
 
 };
 
 const addToWishlistGet = (req, res) => {
     const previousPageUrl = req.headers.referer || '/';
-    const wishlist={
-        id:req.params.id,
+    const wishlist = {
+        id: req.params.id,
         size: req.params.size
     };
-    user.findOne({_id: req.session._id})
+    user.findOne({ _id: req.session._id })
         .then((result) => {
-            if (!result.wishlist.some((obj)=> obj.id === req.params.id))
-            {
-                user.updateOne({_id: req.session._id},
-                    {$push:{wishlist: wishlist}})
-                    .then(()=>{
+            if (!result.wishlist.some((obj) => obj.id === req.params.id)) {
+                user.updateOne({ _id: req.session._id },
+                    { $push: { wishlist: wishlist } })
+                    .then(() => {
                         res.redirect(previousPageUrl);
                     });
             }
-            else 
-            { 
+            else {
                 res.redirect(previousPageUrl);
             }
 
         });
-    
+
 };
 
-const addToCartGetWhishlist = (req,res) =>{
+const addToCartGetWhishlist = (req, res) => {
     user.updateOne(
         { _id: req.session._id },
-        { $pull: { wishlist: {id: req.params.id} },
-        $push: { cart:{id: req.params.id, numbers: 1, size:"m" }}})
-        .then(()=>{
+        {
+            $pull: { wishlist: { id: req.params.id } },
+            $push: { cart: { id: req.params.id, numbers: 1, size: "m" } }
+        })
+        .then(() => {
             res.redirect("/cart/wishlist");
         });
-    
+};
+
+const onlinePaymentPost = (req, res) => {
+    const total = req.body.total * 100;
+    var options = {
+        amount: total,  // amount in the smallest currency unit
+        currency: "INR",
+        receipt: "order_rcptid_11"
+    };
+    instance.orders.create(options, function (err, order) {
+        res.json(order);
+    });
+
+};
+
+const orderPlacedOnline = async (req, res) => {
+    const dateNow = dateAndTime(new Date());
+    const ETADate = dateAndTime(new Date(Date.now() + 3 * 24 * 60 * 60 * 1000));
+    user.findOne({ _id: req.session._id })
+        .then(async (result) => {
+            const cart = result.cart;
+            const orders = await Promise.all(cart.map(async(item) => {
+                let price;
+                let oneProduct= await products.findOne({_id: item.id});
+                price = ((oneProduct.price*0.01*(100-oneProduct.moreInfo.discount)).toFixed(2));
+                console.log(price);
+                return {
+                    id: item.id,
+                    numbers: item.numbers,
+                    size: item.size,
+                    paymentID: req.body.response.razorpay_payment_id,
+                    paymentMethod: "Online",
+                    date: dateNow.date,
+                    ETA: ETADate.date,
+                    time: dateNow.time,
+                    amount: price
+
+                };
+            }));
+            user.updateOne(
+                { _id: req.session._id }, // Specify the document to update based on its _id
+                {
+                    $push: { orders: [...orders] }, // Push an array of order documents
+                    $set: { cart: [] } // Empty the cart field by setting it as an empty array
+                }
+            )
+                .then((result) => {
+                    res.status(200).json({ data: "done" });
+                });
+
+
+        });
 
 
 };
+
+function dateAndTime(date_) {
+
+    const currentDate = new Date(date_); // Convert the timestamp to a Date object
+
+    // Extract date components
+    const day = currentDate.getDate(); // Get the day of the month
+    const month = currentDate.getMonth() + 1; // Get the month (months are zero-based, so adding 1)
+    const year = currentDate.getFullYear(); // Get the four-digit year
+
+    // Extract time components
+    const hours = currentDate.getHours(); // Get the hour (0-23)
+    const minutes = currentDate.getMinutes(); // Get the minutes
+
+    const date = `${day}-${month}-${year}`;
+    const time = `${hours}:${minutes}`;
+    return { date, time };
+}
 
 module.exports = {
     productPost,
@@ -229,6 +316,8 @@ module.exports = {
     orderPlacedGet,
     wishlistGet,
     addToWishlistGet,
-    addToCartGetWhishlist
+    addToCartGetWhishlist,
+    onlinePaymentPost,
+    orderPlacedOnline
 
 };

@@ -34,9 +34,13 @@ const userSchema=new schema({
         numbers: Number,
         size: String,
         status: String,
-        date: Date,
-        ETA: Date,
-        address: String
+        date: String,
+        time: String,
+        ETA: String,
+        address: String,
+        paymentMethod: String,
+        paymentID: String,
+        amount: Number
     }],
     wishlist:[{
         id: String,

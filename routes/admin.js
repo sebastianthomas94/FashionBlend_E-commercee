@@ -16,14 +16,17 @@ const { deleteProductsGet,
         loginGet,
         ordersGet,
         deliveredGet,
-        cancelGet} = require("../controllers/adminControllers");
+        cancelGet,
+        salesReport,
+        chartDataGet,
+        adminHome} = require("../controllers/adminControllers");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         return cb(null, "./public/img/products");
     },
-    filename: (req, file, cb) => {
-        return cb(null, `${Date.now()}.${file.originalname}`);
+    filename: (req, files, cb) => {
+        return cb(null, `${Date.now()}.${files.originalname}`);
     }
 });
 
@@ -32,10 +35,8 @@ const upload = multer({ storage: storage });
 
 
 
-router.get("/", validateLoggin, (req, res) => {
-    res.render("adminHome", { layout: "adminLayout" });
+router.get("/", validateLoggin, adminHome );
 
-});
 
 router.get("/login", loginGet);
 
@@ -49,7 +50,7 @@ router.get("/logout",logoutGet);
 
 router.get("/addproducts", validateLoggin, addproductsGet);
 
-router.post("/addproducts/add", upload.single('img'),addproductsPost);
+router.post("/addproducts/add", upload.array('img',4),addproductsPost);
 
 router.get("/users", validateLoggin, usersGet);
 
@@ -68,5 +69,13 @@ router.get("/orders",validateLoggin,ordersGet);
 router.get("/orders/delivered/:id",deliveredGet);
 
 router.get("/orders/cancel/:id",cancelGet);
+
+
+
+router.get("/report/:period",validateLoggin,salesReport);
+
+router.get("/chartdata",validateLoggin,chartDataGet);
+
+
 
 module.exports = router;

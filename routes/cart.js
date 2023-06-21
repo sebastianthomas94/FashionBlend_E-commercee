@@ -14,7 +14,9 @@ const { productPost,
         orderPlacedGet,
         wishlistGet,
         addToWishlistGet,
-        addToCartGetWhishlist } = require("../controllers/cartController");
+        addToCartGetWhishlist,
+        onlinePaymentPost,
+        orderPlacedOnline } = require("../controllers/cartController");
 
 
 router.post("/addproduct",userLoggin, productPost);
@@ -39,10 +41,18 @@ router.get("/deleteaddress/:id", userLoggin,deleteAddressGet);
 
 router.post("/editaddress/:id", userLoggin,editAddressPost );
 
-router.get("/orderplaced", userLoggin, orderPlacedGet);
+router.get("/cod/orderplaced", userLoggin, orderPlacedGet);
 
 router.get("/wishlist",userLoggin,wishlistGet);
 
 router.get("/wishlist/:id", userLoggin, addToWishlistGet);
+
+router.post("/onlinepayment",userLoggin, onlinePaymentPost)
+
+router.post("/onlinepayment/orderplaced",userLoggin, orderPlacedOnline);
+
+router.get("/orderplacedonline",userLoggin,(req,res)=>{
+        res.render("orderPlaced", { loggedIn: req.session.loggedIn });
+})
 
 module.exports = router;

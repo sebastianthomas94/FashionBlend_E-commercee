@@ -20,9 +20,9 @@
       </thead>
       <tbody>
         <!-- Sample product rows -->
-        <%for (let i in users) {%><%for(let j in users[i].orders){%>
+        <%let k=1 ;for (let i in users) {%><%for(let j in users[i].orders){%>
         <tr>
-          <th scope="row"><%=parseInt(i)+1%></th>
+          <th scope="row"><%=k++%></th>
           <td><%=users[i].orders[j]._id%></td>
           <td><%=users[i].name%></td>
           <td>
