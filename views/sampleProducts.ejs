@@ -11,7 +11,7 @@
   <h2>Casual Shirts</h2>
 <div class="row">
     <div class="col-6">
-        <span class="text-left">3439 Products</span>
+        <span class="text-left"><%=count%> Products</span>
     </div>
     <div class="col-6 text-right">
             Sort by 
@@ -65,7 +65,7 @@
         </a>
       </li>
       <%for(let i=1; i<=totalPages; i++){%>
-        <%if(pageNo===i){%>
+        <%if(parseInt(pageNo)==i){%>
       <li class="page-item active"><a class="page-link" href="/products/page/+<%=i%>"><%=i%></a></li>
       <%}else{%>
       <li class="page-item "><a class="page-link" href="/products/page/+<%=i%>"><%=i%></a></li>

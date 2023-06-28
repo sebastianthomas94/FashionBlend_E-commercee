@@ -1,0 +1,36 @@
+<div class="container mt-3">
+    <h1>Order History</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Item</th>
+                <th scope="col">Date</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%for(let i in data.orders){%>
+                <tr>
+                    <td>
+                        <a href="/orders/<%=data.orders[i]._id%>">Link to product</a>
+                    </td>
+                    <td>
+                        <%=data.orders[i].date%>
+                    </td>
+                    <td>
+                        <%=data.orders[i].numbers%>
+                    </td>
+                    <td> ₹<%=data.orders[i].amount%>
+                    </td>
+                    <td>
+                        <%if(!data.orders[i].status){%>Pending<%}else{%>
+                                <%=data.orders[i].status%>
+                                    <%}%>
+                    </td>
+                </tr>
+                <%}%>
+        </tbody>
+    </table>
+</div>

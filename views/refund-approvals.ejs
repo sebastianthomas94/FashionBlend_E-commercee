@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="row">
+      <div class="col-8">
+        <h1 class="px-3">Orders</h1>
+      </div>
+
+    </div>
+  
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">S/L</th>
+          <th scope="col">Order ID</th>
+          <th scope="col">Payment ID</th>
+          <th scope="col">Date Of Order</th>
+          <th scope="col">Paynment Meathod</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Sample product rows -->
+        <%let k=1 ;for (let i in orderData) {%>
+        <tr>
+          <th scope="row"><%=k++%></th>
+          <td>
+            <span class="d-inline-block text-truncate" style="max-width: 100px;">
+              <%=orderData[i].orders._id%>
+            </span>
+          </td>
+          <td><%if(!orderData[i].orders.paymentID){%>
+              Nill
+              <%}%>
+              <%=orderData[i].orders.paymentID%>
+          </td>
+          <td>
+            <%=orderData[i].orders.date%>
+          </td>
+          <td><%=orderData[i].orders.paymentMethod%></td>
+          <td>
+            <%=orderData[i].orders.status%>
+          </td>
+          <td>
+            <button class="btn btn-danger" type="button" onclick="initiateRefund('<%=orderData[i].orders._id%>');">Initiate Refund</button>
+          </td>
+        </tr>
+        <%}%>
+        
+      </tbody>
+    </table>
+    
+
+  </div>
+
+  <script src="/js/admin-refund-approval.js"></script>

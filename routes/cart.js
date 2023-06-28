@@ -16,7 +16,10 @@ const { productPost,
         addToWishlistGet,
         addToCartGetWhishlist,
         onlinePaymentPost,
-        orderPlacedOnline } = require("../controllers/cartController");
+        orderPlacedOnline,
+        deleteWishlistGet,
+        cartToWishlistGet,
+        changeQuantityGet } = require("../controllers/cartController");
 
 
 router.post("/addproduct",userLoggin, productPost);
@@ -54,5 +57,11 @@ router.post("/onlinepayment/orderplaced",userLoggin, orderPlacedOnline);
 router.get("/orderplacedonline",userLoggin,(req,res)=>{
         res.render("orderPlaced", { loggedIn: req.session.loggedIn });
 })
+
+router.get("/wishlist/delete/:id",userLoggin, deleteWishlistGet);
+
+router.get("/wishlist/carttowishlist/:id", userLoggin, cartToWishlistGet);
+
+router.get("/changequantity",userLoggin, changeQuantityGet)
 
 module.exports = router;

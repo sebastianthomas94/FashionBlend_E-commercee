@@ -12,7 +12,7 @@
             <div class="col-md-5">
               <h6 class="brand"><%=wishlist[i].name%></h6>
               <p class="title"><%=wishlist[i].moreInfo.description%></p>
-              <button class="btn btn-outline-danger">Remove</button>
+              <button class="btn btn-outline-danger" onclick="window.location.href = '/cart/wishlist/delete/<%=wishlist[i]._id%>'">Remove</button>
             </div>
             <div class="col-md-5">
               <p class="mrp">MRP: <span class="text-muted"><del><%=wishlist[i].price%></del></span></p>

@@ -1,4 +1,3 @@
-const products = require("../model/products");
 
 
 const validateLoggin = (req, res, next) => {
@@ -19,11 +18,11 @@ const userLoggin = (req, res, next) => {
     }
 };
 
-const pageNation = (pageNo, capacity, aggrigation) => {
+const pageNation = (pageNo, capacity, aggrigation,schema) => {console.log("aggrigation called");
     return new Promise( (res, rej) => {
-         products.aggregate(aggrigation).skip((pageNo - 1) * capacity).limit(capacity)
+         schema.aggregate(aggrigation).skip((pageNo - 1) * capacity).limit(capacity)
             .then(async(result) => {
-                res([result, await products.aggregate(aggrigation).count("count")]);
+                res([result, await schema.aggregate(aggrigation).count("count")]);
             })
             .catch((err) => {
                 rej(err);

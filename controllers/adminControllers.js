@@ -1,5 +1,10 @@
 const product = require("../model/products");
 const users = require("../model/user");
+const category = require('../model/categories');
+const { validateLoggin,
+    userLoggin,
+    pageNation } = require("../middleware/general");
+const mongoose = require("mongoose");
 
 const adminUsername = "admin";
 const adminPassword = "pass";
@@ -25,13 +30,19 @@ const loginPost = (req, res) => {
     }
 };
 
-const productsGet = (req, res) => {
+const productsGet = async (req, res) => {
+    let pageNo;
+    if (req.query.p)
+        pageNo = req.query.p;
+    else
+        pageNo = 1;
+    const capacity = 10;
+    const aggrigateStages = [];
+    const [productForPage, totalCount] = await pageNation(pageNo, capacity, aggrigateStages, product);
+    const totalPages = Math.floor(parseInt(totalCount[0].count) / capacity) + 1;
 
-    product.find()
-        .then((result) => {
-            res.render("adminProducts", { layout: "adminLayout", products: result });
-        })
-        .catch((err) => console.log(err));
+    res.render("adminProducts", { layout: "adminLayout", products: productForPage, totalPages, pageNo, count: totalCount[0].count, capacity });
+
 };
 
 const logoutGet = (req, res) => {
@@ -43,13 +54,14 @@ const addproductsGet = (req, res) => {
     res.render("addProducts", { layout: "adminLayout" });
 };
 
-const addproductsPost = (req, res) => {console.log(req.files, req.file);
+const addproductsPost = (req, res) => {
+    console.log(req.files, req.file);
     const newProduct = new product({
         name: req.body.name,
         price: req.body.price,
         categories: [req.body.categories],
         size: req.body.size,
-        img: [req.files[0].originalname,req.files[1].originalname,req.files[2].originalname,req.files[3].originalname],
+        img: [req.files[0].originalname, req.files[1].originalname, req.files[2].originalname, req.files[3].originalname],
         moreInfo: {
             brand: req.body.brand,
             description: req.body.description,
@@ -136,18 +148,27 @@ const deleteProductsGet = (req, res) => {
         });
 };
 
-const ordersGet = (req, res) => {
-    users.find({})
-        .then((data) => {
-            const orders = [];
-            for (let i in data) {
-                if (data.orders)
-                    orders.push(data);
+const ordersGet = async (req, res) => {
+    let pageNo;
+    if (req.query.p)
+        pageNo = req.query.p;
+    else
+        pageNo = 1;
+    const capacity = 10;
+    const aggrigateStages = [
+        { $unwind: "$orders" }, {
+            $project: {
+                "productId": "$orders.id", "name": "$name", "numbers": "$orders.numbers", "oderId": "$orders._id",
+                "amount": "$orders.amount", "status": "$orders.status", "phone": "$phone",
+                "address": "$address", "userId": "$_id"
             }
+        }
+    ];
+    const [data, totalCount] = await pageNation(pageNo, capacity, aggrigateStages, users);
+    const totalPages = Math.floor(parseInt(totalCount[0].count) / capacity) + 1;
+    res.render("orderList", { layout: "adminLayout", users: data, totalPages, pageNo, count: totalCount[0].count, capacity });
 
-            res.render("orderList", { layout: "adminLayout", users: data });
 
-        });
 };
 
 const deliveredGet = (req, res) => {
@@ -155,7 +176,7 @@ const deliveredGet = (req, res) => {
         { "orders._id": req.params.id },
         { $set: { "orders.$.status": "delivered" } })
         .then(() => {
-            res.redirect("/admin/orders");
+            res.redirect(req.get('referer'));
         });
 };
 
@@ -164,7 +185,7 @@ const cancelGet = (req, res) => {
         { "orders._id": req.params.id },
         { $set: { "orders.$.status": "cancel" } })
         .then(() => {
-            res.redirect("/admin/orders");
+            res.redirect(req.get('referer'));
         });
 }
 
@@ -312,15 +333,103 @@ const chartDataGet = async (req, res) => {
     res.status(200).json({ salesAmount });
 };
 
-const adminHome = async(req, res) => {
+const adminHome = async (req, res) => {
     const pastFiveOrders = await users.aggregate([
         { $unwind: "$orders" }, /* Flatten the array field*/
         { $sort: { "orders.date": -1 } }, /* Sort by the 'date' field in descending order*/
         { $limit: 5 } /* Get the top 5 documents*/,
-        { $project: { orders: 1, _id:0,  name:1 } }
+        { $project: { orders: 1, _id: 0, name: 1 } }
     ])
-    res.status(200).render("adminHome", { layout: "adminLayout", pastFiveOrders});    
+    res.status(200).render("adminHome", { layout: "adminLayout", pastFiveOrders });
 
+};
+const categoriesGet = (req, res) => {
+    category.find({})
+        .populate('children')
+        .exec()
+        .then((result) => {
+            console.log(result);
+            res.render('adminCategories', { layout: "adminLayout", categories: result });
+        }); 
+};
+
+const orderDetailsGet = (req, res) => {
+    users.aggregate([
+        { $unwind: "$orders" },
+        {
+            $project: {
+                orders: 1
+            }
+        },
+        {
+            $match: {
+                "orders._id": new mongoose.Types.ObjectId(req.params.orderId)
+            }
+        }
+
+    ])
+        .then((result) => {
+            console.log(result);
+            product.find({ _id: result[0].orders.id })
+                .then((result1) => {
+                    res.status(200).render("ordersPage", { layout: "adminLayout", orderData: result, productData: result1 });
+                })
+
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+};
+
+const refundApprovals = (req, res) => {
+    users.aggregate([
+        { $unwind: "$orders" },
+        {
+            $project: {
+                orders: 1
+            }
+        },
+        {
+            $match: {
+                "orders.status": "cancel"
+            }
+        }
+
+    ])
+        .then((result) => {
+            res.status(200).render("refund-approvals", { layout: "adminLayout", orderData: result });
+        });
+};
+
+const InitiateRefundGet = async (req, res) => {
+    const order = await users.findOne(
+        { "orders._id": req.params.orderID },
+        { "orders.$": 1 }
+    );
+
+    if (!order) {
+        return res.status(404).json({ message: 'Order not found' });
+    }
+    const x = order.orders[0].amount;
+    users.findOneAndUpdate(
+        { "orders._id": req.params.orderID },
+        { $inc: { wallet: parseInt(x) } },
+        { new: true }
+    )
+        .then((result) => {
+            users.findOneAndUpdate(
+                { "orders._id": req.params.orderID },
+                { $pull: { orders: { _id: req.params.orderID } } },
+                { new: true }
+            )
+                .then(() => {
+                    console.log(req.get('referer'));
+                    if (!req.get('referer') === "/admin/refund-approvals")
+                        res.status(200).redirect("/admin");
+                    else
+                        res.status(200).send({ send: "done" });
+                });
+        });
 };
 
 module.exports = {
@@ -340,5 +449,11 @@ module.exports = {
     cancelGet,
     salesReport,
     chartDataGet,
-    adminHome
+    adminHome,
+    categoriesGet,
+    orderDetailsGet,
+    refundApprovals,
+    InitiateRefundGet
 };
+
+

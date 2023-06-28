@@ -14,9 +14,9 @@ const productsGet = async (req, res) => {
         }
     }];
     
-    const [products,totalCount] = await pageNation(pageNo, capacity, aggrigateStages);
+    const [productForPage,totalCount] = await pageNation(pageNo, capacity, aggrigateStages, products);
     const totalPages = Math.floor(parseInt(totalCount[0].count)/capacity)+1;
-    res.render("sampleProducts", { loggedIn: req.session.loggedIn, products: products, totalPages, pageNo });
+    res.render("sampleProducts", { loggedIn: req.session.loggedIn, products: productForPage, totalPages, pageNo, count: totalCount[0].count });
 
 };
 

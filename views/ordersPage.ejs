@@ -1,0 +1,63 @@
+<div class="container">
+
+    <div class="card mb-3">
+      <div class="card-header">
+        <h5 class="mb-0">Order #<%=orderData[0].orders._id%></h5>
+        <%if(orderData[0].orders.status=="cancel"){%>
+        <span class="badge badge-danger">Cancelled</span>
+        <%} else if(orderData[0].orders.status==="delivered"){%>
+            <span class="badge badge-success">Delivered</span>
+        <%}else{%>
+        <span class="badge badge-primary">Pending</span>
+        <%}%>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-2">
+            <img src="/img/products/<%=productData[0].img[0]%>" alt="Product Image" class="img-fluid">
+          </div>
+          <div class="col-md-10">
+            <h5 class="card-title"><%=productData[0].name%></h5>
+            <p class="card-text"><%=productData[0].moreInfo.description%></p>
+            <p class="card-text">Quantity: <%=orderData[0].orders.numbers%></p>
+            <p class="card-text">Price: ₹<%=productData[0].price%></p>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Order Total</h5>
+                <p>Total Amount: ₹<%=orderData[0].orders.amount%></p>
+              </div>
+          <div class="col-md-6">
+            <h5>Payment Details</h5>
+            <p>Payment Method: <%=orderData[0].orders.paymentMethod%></p>
+            <%if (orderData[0].orders.paymentMethod === "Online"){%>
+            <p>Last 4 digits:        <span class="badge badge-light"><%=orderData[0].orders.paymentID%></span> </p>
+            <%}%>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-12">
+            <p>
+                <%if(orderData[0].orders.status=="cancel"){%>
+            <h5>Order Actions</h5>
+
+              <a href="/admin/refund-approvals/<%=orderData[0].orders._id%>" class="btn btn-danger" onclick="window.location.href='/admin/orders'">Refund Amount</a>
+              <%} else if(orderData[0].orders.status!="delivered") {%>
+                <a href="/admin/orders/cancel/<%=orderData[0].orders._id%>" class="btn btn-danger"> Cancel Order</a>
+                <%}%>
+              <!-- <a href="#" class="btn btn-primary">Initiate Item return</a> -->
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <!-- Another order card -->
+      <!-- Repeat this card structure for each order -->
+    </div>
+
+  </div>

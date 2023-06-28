@@ -146,11 +146,11 @@ const orderPlacedGet = (req, res) => {
     user.findOne({ _id: req.session._id })
         .then(async (result) => {
             const cart = result.cart;
-            const orders = await Promise.all(cart.map(async(item) => {
+            const orders = await Promise.all(cart.map(async (item) => {
                 let price;
-                let oneProduct= await products.findOne({_id: item.id});
-                price = ((oneProduct.price*0.01*(100-oneProduct.moreInfo.discount)).toFixed(2))*item.numbers;
-                console.log(price);
+                let oneProduct = await products.findOne({ _id: item.id });
+                price = ((oneProduct.price * 0.01 * (100 - oneProduct.moreInfo.discount)).toFixed(2)) * item.numbers;
+                updateQuantityInWarehouse(item.id, item.numbers);
                 return {
                     id: item.id,
                     numbers: item.numbers,
@@ -248,11 +248,11 @@ const orderPlacedOnline = async (req, res) => {
     user.findOne({ _id: req.session._id })
         .then(async (result) => {
             const cart = result.cart;
-            const orders = await Promise.all(cart.map(async(item) => {
+            const orders = await Promise.all(cart.map(async (item) => {
                 let price;
-                let oneProduct= await products.findOne({_id: item.id});
-                price = ((oneProduct.price*0.01*(100-oneProduct.moreInfo.discount)).toFixed(2));
-                console.log(price);
+                let oneProduct = await products.findOne({ _id: item.id });
+                price = ((oneProduct.price * 0.01 * (100 - oneProduct.moreInfo.discount)).toFixed(2));
+                updateQuantityInWarehouse(item.id, item.numbers);
                 return {
                     id: item.id,
                     numbers: item.numbers,
@@ -301,6 +301,51 @@ function dateAndTime(date_) {
     return { date, time };
 }
 
+function updateQuantityInWarehouse(id, number) {
+    products.updateOne(
+        { _id: id }, // Specify the document to update based on its _id
+        { $inc: { quantity: -number } } // Decrement the value of the field by 10
+    )
+        .then((result) => console.log("sdfsdfasdfsda", result))
+        .catch((err) => console.log(err));
+}
+
+const deleteWishlistGet = (req, res) => {
+    user.updateOne(
+        { _id: req.session._id },
+        {
+            $pull: { wishlist: { id: req.params.id } }
+        })
+        .then(() => res.status(200).redirect("/cart/wishlist"));
+};
+
+const cartToWishlistGet = (req, res) => {
+    user.updateOne(
+        { _id: req.session._id },
+        {
+            $push: { wishlist: { id: req.params.id } },
+            $pull: { cart: { id: req.params.id } }
+        }
+    )
+        .then((result) => {
+            res.status(200).redirect("/cart")
+        });
+};
+
+
+const changeQuantityGet = (req, res) => {
+    user.updateOne(
+        { _id: req.session._id, "cart._id": req.query.id },
+        {
+            $set: { "cart.$.numbers": req.query.newVal }
+        }
+    )
+        .then((result)=>{
+            res.status(200).send({succes:"done"});
+        });
+
+};
+
 module.exports = {
     productPost,
     loggedIn,
@@ -318,6 +363,8 @@ module.exports = {
     addToWishlistGet,
     addToCartGetWhishlist,
     onlinePaymentPost,
-    orderPlacedOnline
-
+    orderPlacedOnline,
+    deleteWishlistGet,
+    cartToWishlistGet,
+    changeQuantityGet
 };

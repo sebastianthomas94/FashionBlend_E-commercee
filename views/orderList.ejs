@@ -1,49 +1,98 @@
 <div class="container">
-    <div class="row">
-      <div class="col-8">
-        <h1 class="px-3">Orders</h1>
-      </div>
-
+  <div class="row">
+    <div class="col-8">
+      <h1 class="px-3">Orders</h1>
     </div>
-  
-    <table class="table">
-      <thead>
+
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">S/L</th>
+        <th scope="col">Order ID</th>
+        <th scope="col">User</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Address</th>
+        <th scope="col">Status</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Sample product rows -->
+      <%let k=1 ;for (let i in users) {%>
         <tr>
-          <th scope="col">S/L</th>
-          <th scope="col">Order ID</th>
-          <th scope="col">User</th>
-          <th scope="col">Phone</th>
-          <th scope="col">Address</th>
-          <th scope="col">Status</th>
-          <th scope="col">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Sample product rows -->
-        <%let k=1 ;for (let i in users) {%><%for(let j in users[i].orders){%>
-        <tr>
-          <th scope="row"><%=k++%></th>
-          <td><%=users[i].orders[j]._id%></td>
-          <td><%=users[i].name%></td>
+          <th scope="row">
+            <%=k++%>
+          </th>
+          <td>
+            <a href="/admin/orders/<%=users[i].userId%>/<%=users[i].oderId%>" target="_blank"> link to product</a><br>
+            <%=users[i].oderId%>
+          </td>
+          <td>
+            <%=users[i].name%>
+          </td>
           <td>
             <%=users[i].phone%>
           </td>
-          <td><%=users[i].address[0].state + " Pin:"+users[i].address[0].pin%></td>
-          <td><%if(users[i].orders[j].status){%> <%=users[i].orders[j].status%><%}else{%>Pending<%}%></td>
+          <td>
+            <%=users[i].address[0].state + " Pin:" +users[i].address[0].pin%>
+          </td>
+          <td>
+            <%if(users[i].status=="cancel"){%>
+              <span class="badge badge-danger">Cancelled</span>
+              <%} else if(users[i].status==="delivered" ){%>
+                <span class="badge badge-success">Delivered</span>
+                <%}else{%>
+                  <span class="badge badge-primary">Pending</span>
+                  <%}%>
+          </td>
           <td>
             <div class="dropdown">
-                <button class="btn btn-outline-warning dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              <%if(!users[i].status){%>
+                <button class="btn btn-outline-warning dropdown-toggle" type="button" id="dropdownMenuButton1"
+                  data-bs-toggle="dropdown" aria-expanded="false">
                   Action
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                  <li><a class="dropdown-item" href="/admin/orders/delivered/<%=users[i].orders[j]._id%>">Delivered</a></li>
-                  <li><a class="dropdown-item" href="/admin/orders/cancel/<%=users[i].orders[j]._id%>">Cancel</a></li>
+                  <li><a class="dropdown-item" href="/admin/orders/delivered/<%=users[i].oderId%>">Delivered</a></li>
+                  <li><a class="dropdown-item" href="/admin/orders/cancel/<%=users[i].oderId%>">Cancel</a></li>
                 </ul>
-              </div>
+                <%}else{%>
+                  <i class="bi bi-check">Action Done</i>
+                  <%}%>
+
+            </div>
           </td>
         </tr>
-        <%}}%>
-        
-      </tbody>
-    </table>
-  </div>
+        <%}%>
+
+    </tbody>
+  </table>
+
+  <nav>
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <%for(let i=1; i<=totalPages; i++){%>
+        <%if(parseInt(pageNo)==i){%>
+          <li class="page-item active"><a class="page-link" href="/admin/orders?p=<%=i%>">
+              <%=i%>
+            </a></li>
+          <%}else{%>
+            <li class="page-item "><a class="page-link" href="/admin/orders?p=<%=i%>">
+                <%=i%>
+              </a></li>
+            <%}%>
+              <%}%>
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+    </ul>
+  </nav>
+</div>

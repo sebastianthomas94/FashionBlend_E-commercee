@@ -44,7 +44,8 @@ const userSchema=new schema({
     }],
     wishlist:[{
         id: String,
-    }]
+    }],
+    wallet: Number
 
 });
 

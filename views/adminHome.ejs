@@ -28,7 +28,6 @@
                         <p>Total Sales: ₹<span id="totalSales"></span></p>
                         <p>Total Orders: <span id="totalOrders"></span></p>
                         <p>Average Order Value: ₹<span id="averageOrder"></span></p>
-                        <p>Total Revenue: ₹<span id="totalRevenue"></span></p>
                     </div>
                 </div>
             </div>
@@ -70,7 +69,9 @@
                                     <td><%=parseInt(i)+1%></td>
                                     <td><%=pastFiveOrders[i].name%></td>
                                     <td><%=pastFiveOrders[i].orders.date+" "+pastFiveOrders[i].orders.time%></td>
-                                    <td><%=pastFiveOrders[i].orders.id%></td>
+                                    <td>
+                                        <a href="/products/<%=pastFiveOrders[i].orders.id%>" target="_blank">link to product</a>
+                                    </td>
                                     <td><%=pastFiveOrders[i].orders.numbers%></td>
                                     <td><%=pastFiveOrders[i].orders.amount/pastFiveOrders[i].orders.numbers%></td>
                                     <td><%=pastFiveOrders[i].orders.amount%></td>

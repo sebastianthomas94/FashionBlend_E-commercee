@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="/styles/zoomEffectProduct.css">
+
+
 <div class="container-fluid">
 <div class="row">
   <div class="col mt-3">
@@ -12,29 +15,29 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row ">
   <div class="col-md-8">
     <div class="row">
-      <div class="col-md-6 ">
-        <div class="text-center m-1">
-          <img src="/img/products/<%=product.img[0]%>"  alt="Product 1" width="100%" class="rounded">
+      <div class="col-md-6 product-container ">
+        <div class="text-center m-1 product-image">
+          <img src="/img/products/<%=product.img[0]%>"  alt="Product 1" width="100%" class="rounded zoom" data-toggle="modal" data-target="#productModal">
         </div>
       </div>
-      <div class="col-md-6 ">
-        <div class="text-center m-1">
-          <img src="/img/products/<%=product.img[1]%>" alt="Product 2" width="100%" class="rounded">
+      <div class="col-md-6 product-container">
+        <div class="text-center m-1 product-image ">
+          <img src="/img/products/<%=product.img[1]%>" alt="Product 2" width="100%" class="rounded" data-toggle="modal" data-target="#productModal">
         </div>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6">
-        <div class="text-center m-1">
-          <img src="/img/products/<%=product.img[2]%>" alt="Product 3" width="100%" class="rounded">
+      <div class="col-md-6 product-container">
+        <div class="text-center m-1 product-image">
+          <img src="/img/products/<%=product.img[2]%>" alt="Product 3" width="100%" class="rounded" data-toggle="modal" data-target="#productModal">
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="text-center m-1">
-          <img src="/img/products/<%=product.img[3]%>" alt="Product 4" width="100%" class="rounded">
+      <div class="col-md-6 product-container">
+        <div class="text-center m-1 product-image">
+          <img src="/img/products/<%=product.img[3]%>" alt="Product 4" width="100%" class="rounded" data-toggle="modal" data-target="#productModal">
         </div>
       </div>
     </div>
@@ -77,23 +80,20 @@
       
     </div>
     <div class="row justify-content-center m-4" style="max-width: 3000px">
-      <div class="col-2">
-        <button class="btn btn-primary px-3 me-2" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-        <i class="bi bi-file-minus"></i>
-      </button>
-      </div>
+      <div class="d-flex mb-4" style="max-width: 300px">
+        <button class="btn btn-primary px-3 me-2"
+          onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+          <i class="bi bi-file-minus"></i>
+        </button>
 
-      <div class="col-3">
         <div class="form-outline">
-          <input id="numbers" min="1"  name="quantity" value="1" type="number" class="form-control" />
-          
-        </div>
-      </div>
+          <input id="numbers" min="1" name="quantity"  value="1" type="number" class="form-control" />
 
-      <div class="col-2">
+        </div>
+
         <button class="btn btn-primary px-3 ms-2"
-        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-        <i class="bi bi-plus"></i>
+          onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+          <i class="bi bi-plus"></i>
         </button>
       </div>
     </div>
@@ -128,3 +128,42 @@
       Select a size first
     </div>
   </div> -->
+
+  <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="productModalLabel">Product Photos</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="/img/products/<%=product.img[0]%>" alt="Product 1" class="d-block w-100">
+              </div>
+              <div class="carousel-item">
+                <img src="/img/products/<%=product.img[1]%>" alt="Product 2" class="d-block w-100">
+              </div>
+              <div class="carousel-item">
+                <img src="/img/products/<%=product.img[2]%>" alt="Product 3" class="d-block w-100">
+              </div>
+              <div class="carousel-item">
+                <img src="/img/products/<%=product.img[3]%>" alt="Product 3" class="d-block w-100">
+              </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -11,6 +11,7 @@ const admin = require("./routes/admin");
 const products = require("./routes/products");
 const user = require("./model/user");
 const cart = require("./routes/cart");
+const search = require("./routes/search");
 const app = express();
 
 app.set("view engine", "ejs");     
@@ -48,6 +49,7 @@ app.use("/", home);
 app.use("/auth", auth);
 app.use("/products", products);
 app.use("/cart", cart);
+app.use("/search", search);
 
 const url = "mongodb://127.0.0.1:27017/FashionBlend";
 

@@ -19,7 +19,11 @@ const { deleteProductsGet,
         cancelGet,
         salesReport,
         chartDataGet,
-        adminHome} = require("../controllers/adminControllers");
+        adminHome,
+        categoriesGet,
+        orderDetailsGet,
+        refundApprovals,
+        InitiateRefundGet} = require("../controllers/adminControllers");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -75,6 +79,16 @@ router.get("/orders/cancel/:id",cancelGet);
 router.get("/report/:period",validateLoggin,salesReport);
 
 router.get("/chartdata",validateLoggin,chartDataGet);
+
+router.get("/categories",validateLoggin,categoriesGet);
+
+router.get("/orders/:userId/:orderId",validateLoggin, orderDetailsGet );
+
+router.get("/refund-approvals",validateLoggin, refundApprovals );
+
+router.get("/refund-approvals/:orderID",validateLoggin, InitiateRefundGet );
+
+
 
 
 

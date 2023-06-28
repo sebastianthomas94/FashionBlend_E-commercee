@@ -12,25 +12,25 @@
             </div>
             <div class="form-group">
               <label for="category">Category</label>
-              <select class="form-control" id="category" name="categories" value="<%=product.categories%>" required>
+              <select class="form-control" id="category" name="categories"  required>
                 <option value="">Select a category</option>
-                <option value="men">Men</option>
-                <option value="women">Women</option>
-                <option value="kids">Kids</option>
+                <option value="men" <%if(product.categories[0]==="men"){%>selected<%}%> >Men</option>
+                <option value="women" <%if(product.categories[0]==="women"){%>selected<%}%>>Women</option>
+                <option value="kids" <%if(product.categories[0]==="kids"){%>selected<%}%>>Kids</option>
               </select>
             </div>
             <div class="form-group">
               <label for="size">Size</label>
               <select class="form-control" name="size" value="<%=product.size%>"  id="size">
                 <option value="">Select a size</option>
-                <option value="small">Small</option>
-                <option value="medium">Medium</option>
-                <option value="large">Large</option>
+                <option value="small"<%if(product.size==="small"){%>selected<%}%>>Small</option>
+                <option value="medium" <%if(product.size==="medium"){%>selected<%}%>>Medium</option>
+                <option value="large" <%if(product.size==="large"){%>selected<%}%>>Large</option>
               </select>
             </div>
             <div class="form-group">
               <label for="images">Images</label>
-              <input type="file" class="form-control-file" name=""  id="images">
+              <input type="file" class="form-control-file" name="" value=""  id="images">
             </div>
             <div class="form-group">
               <label for="brand">Brand</label>

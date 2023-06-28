@@ -29,7 +29,6 @@ const verifyPost = (req, res) => {
                     };
                     user.updateOne({ phone: req.session.phone }, logged)
                         .then((result) => {
-                            console.log("online added sucsessfuly", result);
                         })
                         .catch((err) => {
                             console.log("error at adding online", err);
@@ -75,7 +74,6 @@ const logoutGet = (req, res) => {
     };
     user.updateOne({ phone: req.session.phone }, logged)
         .then((result) => {
-            console.log("online added sucsessfuly", result);
         })
         .catch((err) => {
             console.log("error at adding online", err);
@@ -96,11 +94,34 @@ const profileGet = (req, res) => {
         });
 }
 
+const ordersGet = (req, res) => {
+/*     user.aggregate([
+        {
+            $match: {
+                _id: req.session._id
+            }
+        },
+        {
+            $project: {
+                _id: 0, // Exclude the _id field
+                orders: 1
+            }
+        }
+    ]) */
+
+    user.findOne({ _id: req.session._id},{_id: 0, orders:1})
+        .then((result) => {
+            res.render("userOrdersList", { loggedIn: req.session.loggedIn, data: result });
+
+        });
+};
+
 module.exports = {
     logoutGet,
     newUserPost,
     verifyPost,
     authPost,
-    profileGet
+    profileGet,
+    ordersGet
 
 }

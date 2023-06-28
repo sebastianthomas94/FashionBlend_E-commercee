@@ -6,7 +6,8 @@ const {
     newUserPost,
     verifyPost,
     authPost,
-    profileGet} = require("../controllers/authControllers");
+    profileGet,
+    ordersGet} = require("../controllers/authControllers");
 
 
 router.post("/", authPost);
@@ -18,6 +19,8 @@ router.post("/newuser", newUserPost);
 router.get("/logout", logoutGet);
 
 router.get("/profile",userLoggin,profileGet);
+
+router.get("/profile/orders",userLoggin,ordersGet);
 
 
 module.exports = router;

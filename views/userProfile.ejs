@@ -1,46 +1,41 @@
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
+  <div class="container mt-3">
     <h1>User Profile</h1>
     <div class="row">
       <div class="col-md-6">
-        <h2>Personal Information</h2>
-        <p><strong>Name:</strong> <%=data.name%></p>
-        <p><strong>Phone:</strong> <%=data.phone%></p>
-        <p><strong>Email:</strong> <%=data.email%> </p>
-        <p><strong>Gender:</strong> <%=data.edit%></p>
-        <p><strong>Date of Birth:</strong> <%=data.dob%></p>
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title">Personal Information</h2>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><strong>Name:</strong> <%=data.name%></li>
+              <li class="list-group-item"><strong>Phone:</strong> <%=data.phone%></li>
+              <li class="list-group-item"><strong>Email:</strong> <%=data.email%></li>
+              <li class="list-group-item"><strong>Gender:</strong> <%=data.edit%></li>
+              <li class="list-group-item"><strong>Date of Birth:</strong> <%=data.dob%></li>
+            </ul>
+          </div>
+        </div>
       </div>
       <div class="col-md-6">
-        <h2>Address</h2>
-        <div>
-          <h5>Home</h5>
-          <p><strong>Building:</strong> <%=data.address[0].building%></p>
-          <p><strong>Street:</strong> <%=data.address[0].street%></p>
-          <p><strong>City:</strong> <%=data.address[0].city%></p>
-          <p><strong>State:</strong> <%=data.address[0].state%></p>
-          <p><strong>Pin:</strong> <%=data.address[0].pin%></p>
-          <p><strong>Landmark:</strong> <%=data.address[0].landmark%></p>
-          <p><strong>Address Type:</strong> <%=data.address[0].addressType%></p>
-          <p><strong>Default:</strong> Yes</p>
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title">Address</h2>
+            <div>
+              <h5 class="card-subtitle mb-2">Home</h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Building:</strong> <%=data.address[0].building%></li>
+                <li class="list-group-item"><strong>Street:</strong> <%=data.address[0].street%></li>
+                <li class="list-group-item"><strong>City:</strong> <%=data.address[0].city%></li>
+                <li class="list-group-item"><strong>State:</strong> <%=data.address[0].state%></li>
+                <li class="list-group-item"><strong>Pin:</strong> <%=data.address[0].pin%></li>
+                <li class="list-group-item"><strong>Landmark:</strong> <%=data.address[0].landmark%></li>
+                <li class="list-group-item"><strong>Address Type:</strong> <%=data.address[0].addressType%></li>
+                <li class="list-group-item"><strong>Default:</strong> Yes</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <h2>Orders</h2>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Order Number</th>
-          <th>Numbers</th>
-          <th>Size</th>
-        </tr>
-      </thead>
-      <tbody>
-        <%for(let i in data.orders){%>
-        <tr>
-          <td><%=data.orders[i].id%></td>
-          <td><%=data.orders[i].numbers%></td>
-          <td><%=data.orders[i].size%></td>
-        </tr>
-        <%}%>
-      </tbody>
-    </table>
   </div>
+</div>

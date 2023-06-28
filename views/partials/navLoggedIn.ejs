@@ -17,9 +17,9 @@
             <a class="nav-link px-4" href="#">Kids</a>
           </li>
         </ul>
-        <form class="form-inline my-lg-0">
+        <form action="/search" method="get" class="form-inline my-lg-0">
           <div class="input-group">
-            <input class="form-control" type="search" placeholder="What are you looking for?" aria-label="Search">
+            <input class="form-control" name="query" type="search" placeholder="What are you looking for?" aria-label="Search">
             <div class="input-group-append">
               <button class="btn btn-light" type="submit"><i class="bi bi-search" ></i></button>
             </div>
@@ -27,7 +27,18 @@
         </form>
         <ul class="navbar-nav ml-auto">
           <li class="nav-item" >
-            <a class="nav-link px-4" href="/auth/profile" ><i class="bi bi-person" ></i></a> <!-- for logout /auth/logout -->
+          <div class="dropdown">
+            <!-- Profile Icon Button -->
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-fill text-white  me-2"></i> 
+            </button>
+            <!-- Dropdown Menu -->
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li><a class="dropdown-item" href="/auth/profile">Profile</a></li>
+              <li><a class="dropdown-item" href="/auth/profile/orders">Orders</a></li>
+              <li><a class="dropdown-item" href="/auth/logout">Logout</a></li>
+            </ul>
+          </div>
           </li>
           <li class="nav-item">
             <a class="nav-link px-4" href="/cart/wishlist"><i class="bi bi-heart" ></i></a>

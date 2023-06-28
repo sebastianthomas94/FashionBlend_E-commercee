@@ -24,7 +24,7 @@
       <!-- Sample product rows -->
       <%for (let i in products) {%>
       <tr>
-        <th scope="row"><%=parseInt(i)+1%></th>
+        <th scope="row"><%=(parseInt(pageNo-1)*parseInt(capacity))+parseInt(i)+1%></th>
         <td class="text-truncate" style="max-width: 150px;"><%=products[i].name%></td>
         <td class="text-truncate" style="max-width: 150px;"><%=products[i].moreInfo.brand%></td>
         <td>
@@ -52,4 +52,27 @@
       
     </tbody>
   </table>
+
+  
+<nav>
+  <ul class="pagination justify-content-center">
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <%for(let i=1; i<=totalPages; i++){%>
+      <%if(parseInt(pageNo)==i){%>
+    <li class="page-item active"><a class="page-link" href="/admin/products?p=<%=i%>"><%=i%></a></li>
+    <%}else{%>
+    <li class="page-item "><a class="page-link" href="/admin/products?p=<%=i%>"><%=i%></a></li>
+      <%}%>
+    <%}%>
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
 </div>
