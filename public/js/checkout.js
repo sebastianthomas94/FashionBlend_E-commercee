@@ -4,7 +4,8 @@ function checkout(total) {
   //console.log("dflsakdjf", JSON.parse( selectedAddress));
   let orderID;
 
-  if (paymentMethod === "COD") {
+  if (paymentMethod === "COD" || !paymentMethod) 
+  {
     window.location.href = '/cart/cod/orderplaced';
     return;
   }

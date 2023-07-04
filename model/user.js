@@ -40,12 +40,14 @@ const userSchema=new schema({
         address: String,
         paymentMethod: String,
         paymentID: String,
-        amount: Number
+        amount: Number,
+        Coupon: String
     }],
     wishlist:[{
         id: String,
     }],
-    wallet: Number
+    wallet: Number,
+    referalCode: String
 
 });
 

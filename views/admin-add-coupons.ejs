@@ -1,0 +1,55 @@
+
+  <div class="container">
+    <h2>Enter Voucher Data</h2>
+    <form method="post" action="/admin/coupons/addCoupons">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Enter title">
+          </div>
+          <div class="form-group">
+            <label for="price">Price:</label>
+            <input type="number" class="form-control" id="price" name="price" placeholder="Enter price">
+          </div>
+          <div class="form-group">
+            <label for="priceType">Price Type:</label>
+            <select class="form-control" name="priceType" id="priceType">
+              <option value="flat">Flat</option>
+              <option value="percentage">Percentage</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="minSpent">Minimum Spent:</label>
+            <input type="number" name="minSpent" class="form-control" id="minSpent" placeholder="Enter minimum spent">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="usageLimit">Usage Limit:</label>
+            <input type="number" name="usageLimit" class="form-control" id="usageLimit" placeholder="Enter usage limit">
+          </div>
+          <div class="form-group">
+            <label for="voucherCode">Voucher Code:</label>
+            <input type="text" name="voucherCode" class="form-control" id="voucherCode" placeholder="Enter voucher code">
+          </div>
+          <div class="form-group">
+            <label for="startTime">Start Time:</label>
+            <input type="date" name="startTime" class="form-control" id="startTime">
+          </div>
+          <div class="form-group">
+            <label for="endTime">End Time:</label>
+            <input type="date" name="endTime" class="form-control" id="endTime">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+

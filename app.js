@@ -45,8 +45,14 @@ app.use((req, res, next)=>{
     else
         next();
 });
+app.use((req, res, next)=>{
+    if(req.query.ref)
+        req.session.ref=req.query.ref;
+    next();
+});
 app.use("/", home);
 app.use("/auth", auth);
+
 app.use("/products", products);
 app.use("/cart", cart);
 app.use("/search", search);

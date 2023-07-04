@@ -1,10 +1,12 @@
 const product = require("../model/products");
 const users = require("../model/user");
 const category = require('../model/categories');
+const refferals = require("../model/referrals");
 const { validateLoggin,
     userLoggin,
     pageNation } = require("../middleware/general");
 const mongoose = require("mongoose");
+const Offers = require("../model/offers");
 
 const adminUsername = "admin";
 const adminPassword = "pass";
@@ -60,7 +62,6 @@ const addproductsPost = (req, res) => {
         name: req.body.name,
         price: req.body.price,
         categories: [req.body.categories],
-        size: req.body.size,
         img: [req.files[0].originalname, req.files[1].originalname, req.files[2].originalname, req.files[3].originalname],
         moreInfo: {
             brand: req.body.brand,
@@ -350,7 +351,7 @@ const categoriesGet = (req, res) => {
         .then((result) => {
             console.log(result);
             res.render('adminCategories', { layout: "adminLayout", categories: result });
-        }); 
+        });
 };
 
 const orderDetailsGet = (req, res) => {
@@ -432,6 +433,75 @@ const InitiateRefundGet = async (req, res) => {
         });
 };
 
+const categorySearchGet = (req, res) => {
+    console.log(req.query);
+    category.aggregate([
+        { $match: { name: req.query.category } },
+        { $project: { _id: 0, "children.name": 1 } }
+    ])
+        .then((result) => {
+            console.log(result);
+            res.status(200).send({ data: result[0].children[0] });
+        });
+
+};
+
+const couponsGet = (req, res) => {
+    Offers.find()
+        .then((data) => {
+            console.log(data);
+            res.status(200).render("admin-coupons", { layout: "adminLayout", offers: data });
+        });
+
+
+};
+
+const addCouponsGet = (req, res) => {
+    res.status(200).render("admin-add-coupons", { layout: "adminLayout" });
+
+};
+
+const addCouponsPost = (req, res) => {
+
+    const coupon = new Offers(req.body);
+    console.log(coupon);
+    coupon.save()
+        .then((result) => {
+            res.redirect("/admin/coupons")
+        })
+        .catch((err) => {
+            console.log('error at adding products:', err);
+            res.send("error");
+        });
+};
+
+const referralsGet = (req, res) => {
+    refferals.find()
+        .then((data) => {
+            res.status(200).render("referals-approvals", { layout: "adminLayout", data });
+        });
+};
+
+const approveReferralsGet = (req, res) => {
+    refferals.findOneAndUpdate({_id: req.params.id}, { $set: { status: "Approved" } },{ returnOriginal: false })
+        .then((result)=>{
+            users.findOneAndUpdate({phone: result.userPhone}, { $inc: { wallet: result.eligibleCredit } })
+                .then((data)=>{
+                    console.log("sdfsdfsd",data);
+                    res.redirect("/admin/referrals");
+
+                });
+            
+        });
+};
+
+const rejectReferralsGet = (req, res)=>{
+    refferals.findOneAndUpdate({_id: req.params.id}, { $set: { status: "Rejected" } })
+        .then(()=>{
+            res.redirect("/admin/referrals");
+        });
+};
+
 module.exports = {
     deleteProductsGet,
     editProductsGet,
@@ -453,7 +523,14 @@ module.exports = {
     categoriesGet,
     orderDetailsGet,
     refundApprovals,
-    InitiateRefundGet
+    InitiateRefundGet,
+    categorySearchGet,
+    couponsGet,
+    addCouponsGet,
+    addCouponsPost,
+    referralsGet,
+    approveReferralsGet,
+    rejectReferralsGet
 };
 
 

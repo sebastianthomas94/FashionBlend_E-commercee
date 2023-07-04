@@ -1,0 +1,48 @@
+
+  <div class="container">
+    <div class="row">
+      <div class="col-8">
+        <h1 class="px-3">Coupons</h1>
+      </div>
+      <div class="col-4 text-right mt-3">
+        <button class="btn btn-primary" onclick="window.location.href = '/admin/coupons/addCoupons';">Add Coupons</button>
+      </div>
+    </div>
+    <table id="offersTable" class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Price</th>
+          <th>Price Type</th>
+          <th>Minimum Spent</th>
+          <th>Usage Limit</th>
+          <th>Voucher Code</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% offers.forEach(function(offer) { %>
+          <tr>
+            <td><%= offer.title %></td>
+            <td><%= offer.price %></td>
+            <td><%= offer.priceType %></td>
+            <td><%= offer.minSpent %></td>
+            <td><%= offer.usageLimit %></td>
+            <td><%= offer.voucherCode %></td>
+            <td><%= offer.startTime.toLocaleDateString() %></td>
+            <td><%= offer.endTime.toLocaleDateString() %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+
+
+  <script>
+    $(document).ready(function() {
+      $('#offersTable').DataTable();
+    });
+  </script>
+

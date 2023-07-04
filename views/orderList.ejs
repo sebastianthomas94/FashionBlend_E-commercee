@@ -6,7 +6,7 @@
 
   </div>
 
-  <table class="table">
+  <table class="table" id="orderList">
     <thead>
       <tr>
         <th scope="col">S/L</th>
@@ -96,3 +96,10 @@
     </ul>
   </nav>
 </div>
+
+
+<script>
+  $(document).ready(function () {
+      $('#orderList').DataTable();
+  });
+</script>

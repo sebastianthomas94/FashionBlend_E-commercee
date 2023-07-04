@@ -1,128 +1,199 @@
 <div class="container">
-  <form   id="#checkoutForm1" >
+  <form id="#checkoutForm1">
     <div class="row">
-        <div class="col-md-8">
-            <div class="row mt-4">
-                <div class="col-md-6">
-                  <h2>Delivery Address</h2>
-                </div>
-                <div class="col-md-6 text-end">
-                  <button  type="button" class="btn btn-outline-dark" onclick="window.location.href='/cart/addaddress';">Add New Address</button>
-                </div>
+      <div class="col-md-8">
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <h2>Delivery Address</h2>
+          </div>
+          <div class="col-md-6 text-end">
+            <button type="button" class="btn btn-outline-dark" onclick="window.location.href='/cart/addaddress';">Add
+              New Address</button>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <h4>Default Address</h4>
+          <div class="card">
+            <div class="card-body">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="address" id="address_" value="<%=defaultAddress%>"
+                  checked>
+                <strong>
+                  <%=defaultAddress.name%>
+                </strong><span class="badge badge badge-success ms-3">
+                  <%=defaultAddress.addressType%>
+                </span><br>
+                <span>
+                  <%=defaultAddress.building%>
+                </span><br>
+                <span>
+                  <%=defaultAddress.street+ ", " + defaultAddress.city%>
+                </span><span>, <%=defaultAddress.state%></span><br>
+                <span>Landmark:<%=defaultAddress.landmark%></span><br>
+                <span>Pincode :<%=defaultAddress.pin%></span><br>
+                <span>phone:+91<%=defaultAddress.phone%></span>
               </div>
-          
-              <div class="mt-4">
-                <h4>Default Address</h4>
-                <div class="card">
-                  <div class="card-body">
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="address" id="address_" value="<%=defaultAddress%>" checked>
-                        <strong><%=defaultAddress.name%></strong><span class="badge badge badge-success ms-3"><%=defaultAddress.addressType%></span><br>
-                        <span><%=defaultAddress.building%></span><br>
-                        <span><%=defaultAddress.street+ ", " + defaultAddress.city%></span><span>, <%=defaultAddress.state%></span><br>
-                        <span>Landmark:<%=defaultAddress.landmark%></span><br>
-                        <span>Pincode :<%=defaultAddress.pin%></span><br>
-                        <span>phone:+91<%=defaultAddress.phone%></span>
-                    </div>
-                    <div class="mt-3 addressButton" name="address_" id="defaultAddress">
-                      <button  type="button" class="btn btn-outline-dark" onclick="removeAddress('<%=defaultAddress._id%>');">Remove</button>
-                      <button  type="button" class="btn btn-outline-dark" onclick="editAddress('<%=defaultAddress._id%>');">Edit</button>
-                    </div>
-                  </div>
-                </div>
+              <div class="mt-3 addressButton" name="address_" id="defaultAddress">
+                <button type="button" class="btn btn-outline-dark"
+                  onclick="removeAddress('<%=defaultAddress._id%>');">Remove</button>
+                <button type="button" class="btn btn-outline-dark"
+                  onclick="editAddress('<%=defaultAddress._id%>');">Edit</button>
               </div>
-          
-              <div class="mt-4">
-                <%if(otherAddress){%>
-                <h4>Other Addresses</h4>
-                <%}%>
-                <%for(let i in otherAddress){%>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <%if(otherAddress){%>
+            <h4>Other Addresses</h4>
+            <%}%>
+              <%for(let i in otherAddress){%>
                 <div class="card my-4">
                   <div class="card-body">
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="address" id="address<%=i%>" value="<%=otherAddress[i]%>">
-                      <strong><%=otherAddress[i].name%></strong><span class="badge badge badge-success ms-3"><%=otherAddress[i].addressType%></span><br>
-                      <span><%=otherAddress[i].building%></span><br>
-                      <span><%=otherAddress[i].street+ ", " + otherAddress[i].city%></span><span>, <%=otherAddress[i].state%></span><br>
+                      <input class="form-check-input" type="radio" name="address" id="address<%=i%>"
+                        value="<%=otherAddress[i]%>">
+                      <strong>
+                        <%=otherAddress[i].name%>
+                      </strong><span class="badge badge badge-success ms-3">
+                        <%=otherAddress[i].addressType%>
+                      </span><br>
+                      <span>
+                        <%=otherAddress[i].building%>
+                      </span><br>
+                      <span>
+                        <%=otherAddress[i].street+ ", " + otherAddress[i].city%>
+                      </span><span>, <%=otherAddress[i].state%></span><br>
                       <span>Landmark :<%=otherAddress[i].landmark%></span><br>
                       <span>Pincode :<%=otherAddress[i].pin%></span><br>
                       <span>phone:+91<%=otherAddress[i].phone%></span>
                       <div class="mt-3 addressButton" name="address<%=i%>">
-                        <button type="button" class="btn btn-outline-dark" onclick="deleteAddress('<%=otherAddress[i]._id%>');">Remove</button>
-                        <button  type="button" class="btn btn-outline-dark" onclick="editAddress('<%=otherAddress[i]._id%>');">Edit</button>
+                        <button type="button" class="btn btn-outline-dark"
+                          onclick="deleteAddress('<%=otherAddress[i]._id%>');">Remove</button>
+                        <button type="button" class="btn btn-outline-dark"
+                          onclick="editAddress('<%=otherAddress[i]._id%>');">Edit</button>
                       </div>
                     </div>
                   </div>
                 </div>
                 <%}%>
-          
 
-          
-                <!-- Add more addresses as needed -->
-          
-              </div>
+
+
+                  <!-- Add more addresses as needed -->
+
         </div>
-        <div class="col-md-4 card mt-4 " style="height: 100%;">
-            <div class="card-header py-3 ">
+      </div>
+      <div class="col-md-4">
+        <div class="row">
+          <div class="col-md-12  mt-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Coupon Code</h5>
+                <form>
+                  <div class="form-group">
+                    <label for="couponCode">Enter coupon code:</label>
+                    <input type="text" class="form-control" id="couponCode" placeholder="Enter coupon code">
+                  </div>
+                  <button type="button" class="btn btn-primary my-3" id="apply-coupon">Apply Coupon</button>
+                </form>
+                <div id="errorContainer" class="mt-3 alert alert-danger d-none">
+                </div>
+                <div id="successContainer" class="mt-3 alert alert-success d-none">                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12  mt-4 " style="height: 100%;">
+            <div class="card">
+              <div class=" card-header py-3 ">
                 <h5 class="my-0">Summary</h5>
               </div>
               <div class="card-body">
                 <ul class="list-group list-group-flush">
-                  <li
-                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                  <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                     Total MRP
                     <span>₹<%=total%></span>
                   </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                  <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                     Shipping
                     <span>free</span>
                   </li>
-                  <li
-                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                  <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div id="coupon-disount" class="coupon-discount d-none">
+                      Coupon discount
+                    </div>
+                    <span class="coupon-discount d-none" id="discount-price"></span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div id="wallet-disount" class="coupon-discount ">
+                      From Wallet
+                    </div>
+                    <span class="coupon-discount" id="discount-price"><%=walletDiscount%></span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                     <div>
                       <strong>Total amount</strong>
                       <strong>
                         <p class="mb-0">(including GST)</span>
                       </strong>
                     </div>
-                    <span><strong>₹<%=total%></strong></span>
+                    <%if(walletDiscount){%>
+                    <span id="total"><strong>₹<%=total-walletDiscount%></strong></span>
+                    <%}else{%>
+                    <span id="total"><strong>₹<%=total%></strong></span>
+
+                      <%}%>
                   </li>
                 </ul>
+                <%if(total-walletDiscount>0 || !walletDiscount){%>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio"  name="paymentMethod" value="COD" id="flexRadioDefault1">
+                  <input class="form-check-input" type="radio" name="paymentMethod" value="COD" id="flexRadioDefault1">
                   <label class="form-check-label" for="flexRadioDefault1">
                     Cash On Delivery
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="paymentMethod" value="razorpay" id="flexRadioDefault2" checked>
+                  <input class="form-check-input" type="radio" name="paymentMethod" value="razorpay"
+                    id="flexRadioDefault2" checked>
                   <label class="form-check-label" for="flexRadioDefault2">
                     Online Payment
                   </label>
                 </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="paymentMethod" value="wallet" id="flexRadioDefault3" checked>
+                <%}%>
+<!--                 <div class="form-check">
+                  <input class="form-check-input" type="radio" name="paymentMethod" value="wallet"
+                    id="flexRadioDefault3" checked>
                   <label class="form-check-label" for="flexRadioDefault3">
                     Wallet: 1000
                   </label>
-                </div>
-                <button type="button" class="btn btn-primary btn-lg btn-block" onclick="checkout('<%=total%>');" >  <!-- window.location.href='/cart/orderplaced' -->
+                </div> -->
+                <button type="button" class="btn btn-primary btn-lg btn-block" onclick="checkout('<%=total%>');">
+                  <!-- window.location.href='/cart/orderplaced' -->
                   Checkout
                 </button>
               </div>
+            </div>
+
+          </div>
         </div>
+      </div>
+
     </div>
   </form>
-  </div>
+</div>
 
-  <script>
-    
-     $('.addressButton').hide();
-    $('#defaultAddress').show();
-    $('input[name="address"]').change(function() {
-      $('.addressButton').hide();
-      const buttonDivId= $("div[name='"+$(this).attr('id')+"']");     //for remove and editing address
-        buttonDivId.show();
-        console.log(buttonDivId);
-    }); 
-  </script>
+<script>
+
+  $('.addressButton').hide();
+  $('#defaultAddress').show();
+  $('input[name="address"]').change(function () {
+    $('.addressButton').hide();
+    const buttonDivId = $("div[name='" + $(this).attr('id') + "']");     //for remove and editing address
+    buttonDivId.show();
+    console.log(buttonDivId);
+  }); 
+</script>
+
+<script src="/js/add-coupons.js"></script>
+<script src="/js/wallet.js"></script>

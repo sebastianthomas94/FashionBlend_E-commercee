@@ -16,12 +16,15 @@
               <label for="category">Category</label>
               <select class="form-control" id="category" name="categories" required>
                 <option value="">Select a category</option>
-                <option value="men">Men</option>
-                <option value="women">Women</option>
-                <option value="kids">Kids</option>
+                <option value="Men">Men</option>
+                <option value="Women">Women</option>
+                <option value="Kids">Kids</option>
               </select>
             </div>
-            <div class="form-group">
+            <div  class="form-group" id="subcategoryContainer">
+              <!-- Subcategory select boxes will be dynamically generated here -->
+            </div>
+<!--             <div class="form-group">
               <label for="size">Size</label>
               <select class="form-control" name="size" id="size">
                 <option value="">Select a size</option>
@@ -29,7 +32,7 @@
                 <option value="medium">Medium</option>
                 <option value="large">Large</option>
               </select>
-            </div>
+            </div> -->
             <div class="form-group">
               <label for="images">Images</label>
               <input type="file" class="form-control-file" name="img" id="images" multiple required>
@@ -50,3 +53,6 @@
     </div>
     </form>
   </div>
+
+
+  <script src="/js/adminAddProduct.js"></script>

@@ -95,25 +95,68 @@ const profileGet = (req, res) => {
 }
 
 const ordersGet = (req, res) => {
-/*     user.aggregate([
-        {
-            $match: {
-                _id: req.session._id
+    /*     user.aggregate([
+            {
+                $match: {
+                    _id: req.session._id
+                }
+            },
+            {
+                $project: {
+                    _id: 0, // Exclude the _id field
+                    orders: 1
+                }
             }
-        },
-        {
-            $project: {
-                _id: 0, // Exclude the _id field
-                orders: 1
-            }
-        }
-    ]) */
+        ]) */
 
-    user.findOne({ _id: req.session._id},{_id: 0, orders:1})
+    user.findOne({ _id: req.session._id }, { _id: 0, orders: 1 })
         .then((result) => {
             res.render("userOrdersList", { loggedIn: req.session.loggedIn, data: result });
 
         });
+};
+
+const generateReferralPage = (req, res) => {
+    res.status(200).render("referal-code-gen", { loggedIn: req.session.loggedIn });
+
+};
+
+const generateReferralURL = (req, res) => {
+    user.findOne({ "phone": "91" + req.params.phone })
+        .then((result) => {
+            if (result.referalCode) {
+                res.status(200).send({ 'ref': result.referalCode });
+            }
+            else {
+                const referralCode = generateReferralCode();
+                user.updateOne(
+                    { _id: req.session._id },
+                    { $set: { referalCode: referralCode } }
+                )
+                    .then((data) => {
+                        console.log(referralCode);
+                        res.status(200).send({ 'ref': referralCode });
+
+                    });
+            }
+
+        });
+
+    function generateReferralCode() {
+        var code = '';
+        for (var i = 0; i < 6; i++) {
+            code += getRandomChar();
+        }
+        return code;
+    }
+
+
+    function getRandomChar() {
+        var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        var randomIndex = Math.floor(Math.random() * chars.length);
+        return chars[randomIndex];
+    }
+
 };
 
 module.exports = {
@@ -122,6 +165,8 @@ module.exports = {
     verifyPost,
     authPost,
     profileGet,
-    ordersGet
+    ordersGet,
+    generateReferralPage,
+    generateReferralURL
 
 }

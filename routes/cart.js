@@ -19,7 +19,8 @@ const { productPost,
         orderPlacedOnline,
         deleteWishlistGet,
         cartToWishlistGet,
-        changeQuantityGet } = require("../controllers/cartController");
+        changeQuantityGet,
+        applyCouponsGet } = require("../controllers/cartController");
 
 
 router.post("/addproduct",userLoggin, productPost);
@@ -62,6 +63,8 @@ router.get("/wishlist/delete/:id",userLoggin, deleteWishlistGet);
 
 router.get("/wishlist/carttowishlist/:id", userLoggin, cartToWishlistGet);
 
-router.get("/changequantity",userLoggin, changeQuantityGet)
+router.get("/changequantity",userLoggin, changeQuantityGet);
+
+router.get("/applycoupon",userLoggin,applyCouponsGet);
 
 module.exports = router;

@@ -23,7 +23,14 @@ const { deleteProductsGet,
         categoriesGet,
         orderDetailsGet,
         refundApprovals,
-        InitiateRefundGet} = require("../controllers/adminControllers");
+        InitiateRefundGet,
+        categorySearchGet,
+        couponsGet,
+        addCouponsGet,
+        addCouponsPost,
+        referralsGet,
+        approveReferralsGet,
+        rejectReferralsGet} = require("../controllers/adminControllers");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -88,7 +95,19 @@ router.get("/refund-approvals",validateLoggin, refundApprovals );
 
 router.get("/refund-approvals/:orderID",validateLoggin, InitiateRefundGet );
 
+router.get("/category/search",validateLoggin, categorySearchGet );
 
+router.get("/coupons",validateLoggin, couponsGet );
+
+router.get("/coupons/addcoupons",validateLoggin, addCouponsGet );
+
+router.post("/coupons/addCoupons", validateLoggin, addCouponsPost);
+
+router.get("/referrals",validateLoggin, referralsGet);
+
+router.get("/referrals/approve/:id",validateLoggin, approveReferralsGet);
+
+router.get("/referrals/Reject/:id",validateLoggin, rejectReferralsGet);
 
 
 

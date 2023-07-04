@@ -1,5 +1,7 @@
 const user = require("../model/user");
 const products = require("../model/products");
+const offers = require("../model/offers");
+const referrals = require("../model/referrals");
 const Razorpay = require('razorpay');
 const instance = new Razorpay({
     key_id: 'rzp_test_uN7cMKTYFIHGa4',
@@ -41,7 +43,7 @@ const cartGet = (req, res) => {
                 .then((result) => {
                     let data = cart.map((obj) => {
                         var matchingObject = result.find(item => item.id === obj.id);
-                        totalMRP += (matchingObject.price * obj.numbers);
+                        totalMRP += ((matchingObject.price * (1 - (matchingObject.moreInfo.discount / 100))) * obj.numbers);
                         return { id: obj.id, numbers: obj.numbers, size: obj.size, price: matchingObject.price, img: matchingObject.img, _id: obj._id };
                     });
                     //res.send(data);
@@ -80,15 +82,21 @@ const selectAddressPost = (req, res) => {
         .then((result) => {
             const defaultAddress = [];
             const otherAddress = [];
-            if (!result[0].address.length)
+            if (!result[0].address.length) {
                 res.redirect("/cart/addaddress");
+                return;
+            }
             for (let i in result[0].address) {
                 if (result[0].address[i].default)
                     defaultAddress.push(result[0].address[i]);
                 else
                     otherAddress.push(result[0].address[i]);
             }
-            res.render("selectaddress", { loggedIn: req.session.loggedIn, total: req.session.totalMRP, defaultAddress: defaultAddress[0], otherAddress })
+            let walletDiscount;
+            if (result[0].wallet > 0) {
+                walletDiscount = result[0].wallet >= req.session.totalMRP ? req.session.totalMRP : result[0].wallet;
+            }
+            res.render("selectaddress", { loggedIn: req.session.loggedIn, total: req.session.totalMRP, defaultAddress: defaultAddress[0], otherAddress, walletDiscount: walletDiscount })
 
         });
 };
@@ -143,8 +151,28 @@ const editAddressPost = (req, res) => {
 const orderPlacedGet = (req, res) => {
     const dateNow = dateAndTime(new Date());
     const ETADate = dateAndTime(new Date(Date.now() + 3 * 24 * 60 * 60 * 1000));
+    if (req.session.ref)
+        addReferalPoints(req.session.totalMRP, req.session._id, req.session.ref);
     user.findOne({ _id: req.session._id })
         .then(async (result) => {
+            if (result.wallet > 0) {
+                if (result.wallet >= req.session.totalMRP) {
+                     await user.findOneAndUpdate(
+                        { _id: req.session._id },  // Specify the document you want to update
+                        { $inc: { wallet: -req.session.totalMRP } }
+                    )
+                        .then((data) => {
+                            
+                        });
+                }
+                else {
+                    await user.findOneAndUpdate(
+                        { _id: req.session._id },  // Specify the document you want to update
+                        { $set: { wallet: 0 } }
+                    )
+                    req.sessions.totalMRP -= reslult.wallet;
+                }
+            }
             const cart = result.cart;
             const orders = await Promise.all(cart.map(async (item) => {
                 let price;
@@ -229,14 +257,33 @@ const addToCartGetWhishlist = (req, res) => {
         });
 };
 
-const onlinePaymentPost = (req, res) => {
-    const total = req.body.total * 100;
+const onlinePaymentPost = async (req, res) => {console.log("entered");
+    var total = req.body.total * 100;
+    const usersData = await user.findOne({ _id: req.session._id });
+    if (usersData.wallet > 0) {
+        if (usersData.wallet >= req.body.total) {
+            await user.findOneAndUpdate(
+                { _id: req.session._id },  // Specify the document you want to update
+                { $inc: { wallet: -req.session.totalMRP } }
+            )
+            total = 0;
+        }
+        else {
+            await user.findOneAndUpdate(
+                { _id: req.session._id },  // Specify the document you want to update
+                { $set: { wallet: 0 } }
+            )
+            total -= (usersData.wallet * 100);
+        }
+    }
+    console.log(total);
     var options = {
         amount: total,  // amount in the smallest currency unit
         currency: "INR",
         receipt: "order_rcptid_11"
     };
     instance.orders.create(options, function (err, order) {
+        console.log("instance created",order);
         res.json(order);
     });
 
@@ -245,6 +292,8 @@ const onlinePaymentPost = (req, res) => {
 const orderPlacedOnline = async (req, res) => {
     const dateNow = dateAndTime(new Date());
     const ETADate = dateAndTime(new Date(Date.now() + 3 * 24 * 60 * 60 * 1000));
+    if (req.session.ref)
+        addReferalPoints(req.session.totalMRP, req.session._id, req.session.ref);
     user.findOne({ _id: req.session._id })
         .then(async (result) => {
             const cart = result.cart;
@@ -340,11 +389,89 @@ const changeQuantityGet = (req, res) => {
             $set: { "cart.$.numbers": req.query.newVal }
         }
     )
-        .then((result)=>{
-            res.status(200).send({succes:"done"});
+        .then((result) => {
+            res.status(200).send({ succes: "done" });
         });
 
 };
+
+const applyCouponsGet = (req, res) => {
+
+    offers.findOne({ voucherCode: req.query.code })
+        .then((coupon) => {
+            console.log(coupon);
+            if (!coupon) {
+                res.status(200).send({ message: "Coupon not vaild", valid: false });
+                return;
+            }
+            if (req.session.totalMRP < coupon.minSpent) {
+                res.status(200).send({
+                    message: `Spend ${coupon.minSpent - req.session.totalMRP} more to avail this offer!`,
+                    valid: false
+                });
+                return;
+            }
+            if (new Date() < new Date(coupon.startTime) || new Date() > new Date(coupon.endTime)) {
+                res.status(200).send({
+                    message: `This coupon is only valid from ${coupon.startTime.toLocaleDateString()} to ${coupon.endTime.toLocaleDateString()}!`,
+                    valid: false
+                });
+                return;
+            }
+            if (req.session.appliedCoupon) {
+                res.status(200).send({
+                    message: `Another coupon is alredy applied`,
+                    valid: false
+                });
+                return;
+            }
+            if (req.session.appliedCoupon == req.query.code) {
+                res.status(200).send({
+                    message: `This coupon was already applied`,
+                    valid: false
+                });
+                return;
+            }
+            req.session.appliedCoupon = req.query.code;
+
+
+            const prevTotal = req.session.totalMRP;
+            if (coupon.priceType == "flat")
+                req.session.totalMRP -= coupon.price;
+            else if (coupon.priceType == "percentage")
+                req.session.totalMRP = (req.session.totalMRP * (1 - (coupon.price / 100))).toFixed(2);
+            res.status(200).send({
+                message: 'Coupon code applied successfully!',
+                newTotal: req.session.totalMRP,
+                discount: prevTotal - req.session.totalMRP,
+                valid: true,
+            });
+        });
+
+};
+
+
+function addReferalPoints(total, userId, referalId) {
+    //const buyer = await user.findOne({ _id: userId });
+    user.findOne({ referalCode: referalId })
+        .then((referrer) => {
+            const newReferral = new referrals({
+                name: referrer.name,
+                email: referrer.email,
+                userPhone: referrer.phone,
+                userId,
+                eligibleCredit: (total * 0.15).toFixed(2),
+                total,
+                date: new Date()
+            });
+            console.log(userId == referrer._id, userId, referrer._id, newReferral);
+            if (userId != referrer._id)
+                newReferral.save();
+
+        })
+
+
+}
 
 module.exports = {
     productPost,
@@ -366,5 +493,6 @@ module.exports = {
     orderPlacedOnline,
     deleteWishlistGet,
     cartToWishlistGet,
-    changeQuantityGet
+    changeQuantityGet,
+    applyCouponsGet
 };

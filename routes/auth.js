@@ -7,7 +7,9 @@ const {
     verifyPost,
     authPost,
     profileGet,
-    ordersGet} = require("../controllers/authControllers");
+    ordersGet,
+    generateReferralPage,
+    generateReferralURL} = require("../controllers/authControllers");
 
 
 router.post("/", authPost);
@@ -21,6 +23,12 @@ router.get("/logout", logoutGet);
 router.get("/profile",userLoggin,profileGet);
 
 router.get("/profile/orders",userLoggin,ordersGet);
+
+router.get("/referal-code-generator",userLoggin, generateReferralPage);
+
+router.get("/referal-code-generator/:phone",userLoggin, generateReferralURL);
+
+
 
 
 module.exports = router;

@@ -1,0 +1,19 @@
+<div class="container">
+    <h1>Referral URL Generator</h1>
+    <div class="form-group">
+      <label for="inputUrl">Enter URL:</label>
+      <input type="text" class="form-control" id="inputUrl" placeholder="Enter URL">
+    </div>
+    <button type="button" class="btn btn-primary" onclick="generateReferralURL()">Create Referral URL</button>
+    <div class="form-group mt-3">
+      <label for="generatedUrl">Generated Referral URL:</label>
+      <div class="input-group">
+        <input type="text" class="form-control" id="generatedUrl" readonly>
+        <div class="input-group-append">
+          <button class="btn btn-secondary" type="button" onclick="copyReferralURL()">Copy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/refer-code.js" ></script>
