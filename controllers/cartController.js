@@ -109,7 +109,7 @@ const selectAddressPost = (req, res) => {
             if (result[0].wallet > 0) {
                 walletDiscount = result[0].wallet >= req.session.totalMRP ? req.session.totalMRP : result[0].wallet;
             }
-            res.render("selectaddress", { loggedIn: req.session.loggedIn, total: req.session.totalMRP, defaultAddress: defaultAddress[0], otherAddress, walletDiscount: walletDiscount })
+            res.render("selectAddress", { loggedIn: req.session.loggedIn, total: req.session.totalMRP, defaultAddress: defaultAddress[0], otherAddress, walletDiscount: walletDiscount })
 
         });
 };
