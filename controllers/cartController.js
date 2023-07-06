@@ -44,7 +44,20 @@ const cartGet = (req, res) => {
                     let data = cart.map((obj) => {
                         var matchingObject = result.find(item => item.id === obj.id);
                         totalMRP += ((matchingObject.price * (1 - (matchingObject.moreInfo.discount / 100))) * obj.numbers);
-                        return { id: obj.id, numbers: obj.numbers, size: obj.size, price: matchingObject.price, img: matchingObject.img, _id: obj._id };
+                        let size;
+                        switch (obj.size) {
+                            case ("xs"): size = "Extra Small";
+                                break;
+                            case ("s"): size = "Small";
+                                break;
+                            case ("m"): size = "Medium";
+                                break;
+                            case ("l"): size = "Large";
+                                break;
+                            case ("xl"): size = "Extra Large";
+                                break;
+                        }
+                        return { id: obj.id, numbers: obj.numbers, size: size, price: matchingObject.price, img: matchingObject.img, _id: obj._id, name: matchingObject.name, discount: matchingObject.moreInfo.discount };
                     });
                     //res.send(data);
                     totalMRP = totalMRP.toFixed(2);
@@ -157,12 +170,12 @@ const orderPlacedGet = (req, res) => {
         .then(async (result) => {
             if (result.wallet > 0) {
                 if (result.wallet >= req.session.totalMRP) {
-                     await user.findOneAndUpdate(
+                    await user.findOneAndUpdate(
                         { _id: req.session._id },  // Specify the document you want to update
                         { $inc: { wallet: -req.session.totalMRP } }
                     )
                         .then((data) => {
-                            
+
                         });
                 }
                 else {
@@ -257,7 +270,8 @@ const addToCartGetWhishlist = (req, res) => {
         });
 };
 
-const onlinePaymentPost = async (req, res) => {console.log("entered");
+const onlinePaymentPost = async (req, res) => {
+    console.log("entered");
     var total = req.body.total * 100;
     const usersData = await user.findOne({ _id: req.session._id });
     if (usersData.wallet > 0) {
@@ -283,7 +297,7 @@ const onlinePaymentPost = async (req, res) => {console.log("entered");
         receipt: "order_rcptid_11"
     };
     instance.orders.create(options, function (err, order) {
-        console.log("instance created",order);
+        console.log("instance created", order);
         res.json(order);
     });
 

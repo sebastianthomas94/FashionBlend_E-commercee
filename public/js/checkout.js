@@ -92,6 +92,11 @@ $(document).ready(function () {
   $(".quantityUpdate").on("input", function () {
     const id = $(this).attr('id');
     const newVal = $(this).val();
+    if(newVal<=0)
+    {
+      $("#error-quantity").text("enter a valid quantity");
+      return;
+    }
     $.ajax({
       url: '/cart/changequantity',
       method: 'GET',
@@ -101,11 +106,8 @@ $(document).ready(function () {
       },
       success: function(response) {
         location.reload();
-        console.log('Response:', response);
       },
       error: function(xhr, status, error) {
-        // Handle the error
-        console.log('Error:', error);
       }
     });
   });

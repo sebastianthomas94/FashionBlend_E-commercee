@@ -48,7 +48,7 @@
                     </button>
 
                     <div class="form-outline">
-                      <input id="<%=products[i]._id%>" min="1" name="quantity" value="<%=products[i].numbers%>" type="number" class="form-control quantityUpdate" />
+                      <input id="<%=products[i]._id%>" min="1" name="quantity" value="<%=products[i].numbers%>" type="number" class="form-control quantityUpdate text-center" />
                     </div>
 
                     <button class="btn btn-primary px-3 ms-2"
@@ -56,12 +56,25 @@
                       <i class="bi bi-plus"></i>
                     </button>
                   </div>
+                  <span class="badge badge-danger" id="error-quantity"></span>
                   <!-- Quantity -->
 
                   <!-- Price -->
-                  <p class="text-start text-md-center">
-                    <strong>₹<%=products[i].price%></strong>
-                  </p>
+                  <div class="container">
+                    <div class="row mt-2" >
+                      <div class="col-md-4 text-center text-nowrap ">
+                        <strong style="font-size: medium">₹<%=((products[i].price*0.01*(100-products[i].discount)).toFixed(2))%></strong>
+                      </div>
+                      <div class="col-md-4 text-center text-nowrap">
+                         <span style="font-size: medium; color:#696e79; " class="  text-decoration-line-through">₹<%=products[i].price%></span>
+                    </div>
+                      <div class="col-md-4 text-center text-nowrap">
+                        <span style="font-size: medium; color:#ff905a" class=" font-weight-bold">(<%=products[i].discount%>% OFF)</span>
+                      </div>
+                
+                    </div>
+                  </div>
+
                   <!-- Price -->
                 </div>
               </div>
@@ -71,12 +84,12 @@
               <%}%>
           </div>
         </div>
-        <div class="card mb-4">
+<!--         <div class="card mb-4">
           <div class="card-body">
             <p><strong>Expected shipping delivery</strong></p>
             <p class="mb-0">12.10.2020 - 14.10.2020</p>
           </div>
-        </div>
+        </div> -->
         <div class="card mb-4 mb-lg-0">
           <div class="card-body">
             <p><strong>We accept</strong></p>
@@ -89,9 +102,7 @@
             <img class="me-2" width="45px"
               src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
               alt="Mastercard" />
-            <img class="me-2" width="45px"
-              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.webp"
-              alt="PayPal acceptance mark" />
+
           </div>
         </div>
       </div>

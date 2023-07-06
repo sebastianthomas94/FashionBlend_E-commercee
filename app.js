@@ -57,7 +57,7 @@ app.use("/products", products);
 app.use("/cart", cart);
 app.use("/search", search);
 
-const url = "mongodb://127.0.0.1:27017/FashionBlend";
+const url = "mongodb+srv://kelvinthomas84:zxgsotCblngXbr2i@fashionblend.u3db1y6.mongodb.net/FasionBlend?retryWrites=true&w=majority";
 
 
 
