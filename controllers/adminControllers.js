@@ -57,11 +57,11 @@ const addproductsGet = (req, res) => {
 };
 
 const addproductsPost = (req, res) => {
-    console.log(req.files, req.file);
+    console.log(req.body);
     const newProduct = new product({
         name: req.body.name,
         price: req.body.price,
-        categories: [req.body.categories],
+        categories: req.body.categories,
         img: [req.files[0].originalname, req.files[1].originalname, req.files[2].originalname, req.files[3].originalname],
         moreInfo: {
             brand: req.body.brand,
@@ -373,7 +373,7 @@ const orderDetailsGet = (req, res) => {
             console.log(result);
             product.find({ _id: result[0].orders.id })
                 .then((result1) => {
-                    res.status(200).render("ordersPage", { layout: "adminLayout", orderData: result, productData: result1 });
+                    res.status(200).render("ordersPage", { layout: "adminLayout", orderData: result, productData: result1, userSide:false });
                 })
 
         })
@@ -428,20 +428,15 @@ const InitiateRefundGet = async (req, res) => {
                     if (!req.get('referer') === "/admin/refund-approvals")
                         res.status(200).redirect("/admin");
                     else
-                        res.status(200).send({ send: "done" });
+                        res.status(200).redirect("/admin");
                 });
         });
 };
 
 const categorySearchGet = (req, res) => {
-    console.log(req.query);
-    category.aggregate([
-        { $match: { name: req.query.category } },
-        { $project: { _id: 0, "children.name": 1 } }
-    ])
+    category.find({})
         .then((result) => {
-            console.log(result);
-            res.status(200).send({ data: result[0].children[0] });
+            res.status(200).json(result);
         });
 
 };

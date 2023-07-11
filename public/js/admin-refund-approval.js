@@ -8,7 +8,6 @@ function initiateRefund (orderId){
         dataType: 'json',
         success: function(response) {
           // Code to handle the successful response
-          console.log(response);
           location.reload();
         },
         error: function(xhr, status, error) {

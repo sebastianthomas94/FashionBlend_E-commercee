@@ -17,7 +17,6 @@ const productPost = (req, res) => {
             res.status(200);
         })
         .catch((err) => {
-            console.log(err);
         });
 
 };
@@ -64,9 +63,9 @@ const cartGet = (req, res) => {
                     req.session.totalMRP = totalMRP;
                     res.render("cart", { loggedIn: req.session.loggedIn, products: data, total: totalMRP });
                 })
-                .catch((err) => { console.log(err) })
+                .catch((err) => {  })
         })
-        .catch((err) => { console.log(err); });
+        .catch((err) => {  });
 
 };
 
@@ -87,7 +86,6 @@ const deletePost = (req, res) => {
             res.end();
         })
         .catch((err) => {
-            console.log(err);
         });
 };
 const selectAddressPost = (req, res) => {
@@ -122,7 +120,6 @@ const addAddressPost = (req, res) => {
             res.redirect("/cart/selectaddress");
         })
         .catch((err) => {
-            console.log(err);
         });
 };
 
@@ -139,7 +136,6 @@ const editAddressGet = (req, res) => {
             res.render("editAddressForm", { loggedIn: req.session.loggedIn, address: result.address[0] });
         })
         .catch((err) => {
-            console.log("error from address fetch", err);
         });
 };
 
@@ -149,7 +145,6 @@ const deleteAddressGet = (req, res) => {
             res.redirect("/cart/selectaddress");
         })
         .catch((err) => {
-            console.log(err);
         });
 }
 
@@ -158,7 +153,11 @@ const editAddressPost = (req, res) => {
         { 'address._id': req.params.id },
         { $set: { 'address.$': req.body } })
         .then((result) => { });
-    res.redirect("/cart/selectaddress");
+    if(req.query.profile){
+        res.status(200).json({done:"done"});
+        return;
+    }
+    res.status(200).redirect("/cart/selectaddress");
 };
 
 const orderPlacedGet = (req, res) => {
@@ -183,7 +182,7 @@ const orderPlacedGet = (req, res) => {
                         { _id: req.session._id },  // Specify the document you want to update
                         { $set: { wallet: 0 } }
                     )
-                    req.sessions.totalMRP -= reslult.wallet;
+                    req.session.totalMRP -= reslult.wallet;
                 }
             }
             const cart = result.cart;
@@ -271,7 +270,6 @@ const addToCartGetWhishlist = (req, res) => {
 };
 
 const onlinePaymentPost = async (req, res) => {
-    console.log("entered");
     var total = req.body.total * 100;
     const usersData = await user.findOne({ _id: req.session._id });
     if (usersData.wallet > 0) {
@@ -290,14 +288,12 @@ const onlinePaymentPost = async (req, res) => {
             total -= (usersData.wallet * 100);
         }
     }
-    console.log(total);
     var options = {
         amount: total,  // amount in the smallest currency unit
         currency: "INR",
         receipt: "order_rcptid_11"
     };
     instance.orders.create(options, function (err, order) {
-        console.log("instance created", order);
         res.json(order);
     });
 
@@ -369,8 +365,8 @@ function updateQuantityInWarehouse(id, number) {
         { _id: id }, // Specify the document to update based on its _id
         { $inc: { quantity: -number } } // Decrement the value of the field by 10
     )
-        .then((result) => console.log("sdfsdfasdfsda", result))
-        .catch((err) => console.log(err));
+        .then((result) => {})
+        .catch((err) => {});
 }
 
 const deleteWishlistGet = (req, res) => {
@@ -413,7 +409,6 @@ const applyCouponsGet = (req, res) => {
 
     offers.findOne({ voucherCode: req.query.code })
         .then((coupon) => {
-            console.log(coupon);
             if (!coupon) {
                 res.status(200).send({ message: "Coupon not vaild", valid: false });
                 return;
@@ -478,7 +473,6 @@ function addReferalPoints(total, userId, referalId) {
                 total,
                 date: new Date()
             });
-            console.log(userId == referrer._id, userId, referrer._id, newReferral);
             if (userId != referrer._id)
                 newReferral.save();
 

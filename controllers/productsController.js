@@ -21,9 +21,9 @@ const productsGet = async (req, res) => {
 };
 
 const productsPageGet = (req, res) => {
-    products.find({ _id: req.params.id })
+    products.findOne({ _id: req.params.id })
         .then((result) => {
-            res.render("sampleProductPage", { loggedIn: req.session.loggedIn, product: result[0] });
+            res.render("sampleProductPage", { loggedIn: req.session.loggedIn, product: result });
         })
         .catch((err) => {
             console.log(err);

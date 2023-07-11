@@ -12,6 +12,23 @@
                 <ul>
                   <% for (let k = 0; k < categories[i].children[j].children.length; k++) { %>
                     <li><%= categories[i].children[j].children[k].name %></li>
+                    <% if (categories[i].children[j].children && categories[i].children[j].children.length > 0) { %>
+                      <ul>
+                        <% for (let k = 0; k < categories[i].children[j].children.length; k++) { %>
+                          <li><%= categories[i].children[j].children[k].name %></li>
+                          <% if (categories[i].children[j].children[k].children && categories[i].children[j].children[k].children.length > 0) { %>
+                            <ul>
+                              <% for (let l = 0; l < categories[i].children[j].children[k].children.length; l++) { %>
+                                <li><%if(categories[i].children[j].children[k].children[l].name){%>
+                                  <%= categories[i].children[j].children[k].children[l].name %>
+                                  <%}%>
+                                </li>
+                              <% } %>
+                            </ul>
+                          <% } %>
+                        <% } %>
+                      </ul>
+                    <% } %>
                   <% } %>
                 </ul>
               <% } %>

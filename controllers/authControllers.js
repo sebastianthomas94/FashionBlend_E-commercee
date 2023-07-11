@@ -88,6 +88,7 @@ const logoutGet = (req, res) => {
 };
 
 const profileGet = (req, res) => {
+
     user.findOne({ _id: req.session._id })
         .then((result) => {
             res.render("userProfile", { loggedIn: req.session.loggedIn, data: result });

@@ -1,6 +1,6 @@
 <div class="container">
 
-    <div class="card mb-3">
+    <div class="card m-3 ">
       <div class="card-header">
         <h5 class="mb-0">Order #<%=orderData[0].orders._id%></h5>
         <%if(orderData[0].orders.status=="cancel"){%>
@@ -27,7 +27,7 @@
         <div class="row">
             <div class="col-md-6">
                 <h5>Order Total</h5>
-                <p>Total Amount: ₹<%=orderData[0].orders.amount%></p>
+                <p>Total Amount(includes discount): ₹<%=orderData[0].orders.amount%></p>
               </div>
           <div class="col-md-6">
             <h5>Payment Details</h5>
@@ -41,11 +41,11 @@
         <div class="row">
           <div class="col-md-12">
             <p>
-                <%if(orderData[0].orders.status=="cancel"){%>
+                <%if(orderData[0].orders.status=="cancel" && !userSide){%>
             <h5>Order Actions</h5>
 
               <a href="/admin/refund-approvals/<%=orderData[0].orders._id%>" class="btn btn-danger" onclick="window.location.href='/admin/orders'">Refund Amount</a>
-              <%} else if(orderData[0].orders.status!="delivered") {%>
+              <%} else if(orderData[0].orders.status!="delivered" && orderData[0].orders.status!="cancel") {%>
                 <a href="/admin/orders/cancel/<%=orderData[0].orders._id%>" class="btn btn-danger"> Cancel Order</a>
                 <%}%>
               <!-- <a href="#" class="btn btn-primary">Initiate Item return</a> -->

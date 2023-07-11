@@ -7,14 +7,34 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link px-4" href="#">Women</a>
+          <li class="nav-item d-flex align-items-center justify-content-center mx-3">
+            <div class="dropdown">
+              <a class="dropdown-toggle" style="color:rgba(255,255,255,.5);" href="#" role="button" id="categoryDropdown"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Women
+              </a>
+              <div class="dropdown-menu" aria-labelledby="categoryDropdown" id="women-button"></div>
+            </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link px-4" href="#">Men</a>
+          <li class="nav-item d-flex align-items-center justify-content-center mx-3">
+            <div class="dropdown w-100">
+              <a class="dropdown-toggle" style="color:rgba(255,255,255,.5);" href="#" role="button" id="categoryDropdown"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Men
+              </a>
+              <div class="dropdown-menu w-100" aria-labelledby="categoryDropdown" id="men-button">
+  
+              </div>
+            </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link px-4" href="#">Kids</a>
+          <li class="nav-item d-flex align-items-center justify-content-center mx-3">
+            <div class="dropdown">
+              <a class="dropdown-toggle" style="color:rgba(255,255,255,.5);" href="#" role="button" id="categoryDropdown"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Kids
+              </a>
+              <div class="dropdown-menu" aria-labelledby="categoryDropdown" id="kids-button"></div>
+            </div>
           </li>
         </ul>
         <form action="/search" method="get" class="form-inline my-lg-0">
@@ -52,3 +72,4 @@
     </div>
   </nav>
 
+  <script src="/js/navbarCategories.js"></script>

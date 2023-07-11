@@ -5,21 +5,168 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-body">
-            <h2 class="card-title">Personal Information</h2>
+            <div class="row">
+              <div class="col-8"><h2 class="card-title">Personal Information</h2></div>
+              <div class="col-4">
+                <button type="button" onclick="getAddressID('<%=data.address[0]._id%>')" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter1">
+                  Edit Info
+                </button>
+              </div>
+              
+<!-- Modal for edit profile -->
+<form id="signupForm" action="/auth/newuser" method="post">
+
+<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit personal Info</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card-body">
+          <h5 class="card-title">Edit Account</h5>
+            <div class="form-group">
+              <label for="emailInput">Email</label>
+              <input type="email" class="form-control" value="<%=data.email%>" id="emailInput" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+              <label for="firstNameInput">Name</label>
+              <input type="text" class="form-control" value="<%=data.name%>" id="firstNameInput" name="firstname" placeholder="Enter your first name" required>
+            </div>
+            <div class="form-group">
+              <label for="lastNameInput">Gender</label>
+              <label for="size">Gender</label>
+              <select class="form-control" id="category" name="categories"  required>
+                <option value="">Select a category</option>
+                <option value="men" <%if(data.gender==="Male"){%>selected<%}%> >Men</option>
+                <option value="women" <%if(data.gender==="Female"){%>selected<%}%>>Female</option>
+              </select>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Edit</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+            </div>
+            
+
             <ul class="list-group list-group-flush">
               <li class="list-group-item"><strong>Name:</strong> <%=data.name%></li>
               <li class="list-group-item"><strong>Phone:</strong> <%=data.phone%></li>
               <li class="list-group-item"><strong>Email:</strong> <%=data.email%></li>
-              <li class="list-group-item"><strong>Gender:</strong> <%=data.edit%></li>
+              <li class="list-group-item"><strong>Gender:</strong> <%=data.gender%></li>
               <li class="list-group-item"><strong>Date of Birth:</strong> <%=data.dob%></li>
+              <li class="list-group-item"><strong>Wallet Amount:</strong> ₹<%=data.wallet%></li>
+
             </ul>
           </div>
         </div>
       </div>
       <div class="col-md-6">
+        <%if(data.address[0]){%>
         <div class="card">
           <div class="card-body">
-            <h2 class="card-title">Address</h2>
+            <div class="row">
+              <div class="col-8"><h2 class="card-title">Address</h2></div>
+              <div class="col-4">
+                <button type="button" onclick="getAddressID('<%=data.address[0]._id%>')" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter">
+                  Edit Address
+                </button>
+              </div>
+
+
+<!-- Modal for edit address -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="" method="" id="address-form">
+      <div class="modal-body">
+        <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="fullName" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="fullName" name="name" placeholder="Enter your name" value="<%=data.address[0].name%>">
+              </div>
+              <div class="col-md-6">
+                <label for="mobileNumber" class="form-label">Mobile Number</label>
+                <input type="text" class="form-control" name="phone" id="mobileNumber" value="<%=data.address[0].phone%>" placeholder="Enter mobile number">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="pincode" class="form-label">Pincode</label>
+                <input type="text" class="form-control" name="pin" id="pincode" value="<%=data.address[0].pin%>" placeholder="Enter pincode">
+              </div>
+              <div class="col-md-6">
+                <label for="city" class="form-label">City</label>
+                <input type="text" name="city" class="form-control" id="city"  value="<%=data.address[0].city%>" placeholder="Enter city">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="state" class="form-label">State</label>
+                <input type="text" name="state" class="form-control" id="state" placeholder="Enter state" value="<%=data.address[0].state%>">
+              </div>
+              <div class="col-md-6">
+                <label for="building" class="form-label">Building Name or Number</label>
+                <input type="text" class="form-control" name="building" id="building" value="<%=data.address[0].building%>" placeholder="Enter building details">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="street" class="form-label">Street</label>
+                <input type="text" class="form-control" name="street" value="<%=data.address[0].street%>" id="street" placeholder="Enter street">
+              </div>
+              <div class="col-md-6">
+                <label for="landmark" class="form-label">Landmark (Optional)</label>
+                <input type="text" name="landmark" class="form-control" id="landmark" value="<%=data.address[0].landmark%>" placeholder="Enter landmark">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Address Type</label>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="addressType" id="homeAddress" value="home" <%if(data.address[0].addressType=='home'){%>checked<%}%>>
+                <label class="form-check-label" for="homeAddress">Home</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="addressType" id="officeAddress" value="office" <%if(data.address[0].addressType=='office'){%>checked<%}%>>
+                <label class="form-check-label" for="officeAddress">Office</label>
+              </div>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" name="default" type="checkbox" id="defaultAddress" value="true" <%if(data.address[0].default=='true'){%>checked<%}%>>
+              <label class="form-check-label" for="defaultAddress">Use this as my default shipping address</label>
+            </div>
+            <div class="mt-3 align-items-center">
+
+            </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Edit Address</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+              </div>
+            </div>
             <div>
               <h5 class="card-subtitle mb-2">Home</h5>
               <ul class="list-group list-group-flush">
@@ -35,7 +182,11 @@
             </div>
           </div>
         </div>
+        <%}%>
       </div>
     </div>
   </div>
 </div>
+
+
+<script src="/js/edit-address.js"></script> 

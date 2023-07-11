@@ -3,6 +3,7 @@ const router = exp.Router();
 const users = require("../model/user");
 const product = require("../model/products");
 const mongoose = require("mongoose");
+const categories = require("../model/categories");
 
 
 
@@ -29,7 +30,7 @@ router.get("/orders/:orderID", (req,res)=>{
             console.log(result);
             product.find({ _id: result[0].orders.id })
                 .then((result1) => {
-                    res.status(200).render("ordersPage", {  loggedIn:req.session.loggedIn,orderData: result, productData: result1 });
+                    res.status(200).render("ordersPage", {  loggedIn:req.session.loggedIn,orderData: result, productData: result1, userSide:true });
                 })
 
         })
@@ -38,6 +39,11 @@ router.get("/orders/:orderID", (req,res)=>{
         })
 });
 
-
+router.get("/categoryfetch", (req,res)=>{
+    categories.find()
+        .then((result) => {
+            res.status(200).json(result);
+        });
+});
 
 module.exports = router;
